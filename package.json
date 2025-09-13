@@ -1,0 +1,43 @@
+{
+  "name": "brenda-nails-studio",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Brenda Nails Studio - Modern portfolio website with serverless architecture",
+  "type": "module",
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=8.0.0"
+  },
+  "packageManager": "pnpm@8.15.0",
+  "scripts": {
+    "build": "nx run-many --target=build",
+    "dev": "nx run-many --target=serve",
+    "lint": "nx run-many --target=lint",
+    "lint:fix": "nx run-many --target=lint --fix",
+    "type-check": "nx run-many --target=type-check",
+    "test": "nx run-many --target=test",
+    "test:e2e": "nx run-many --target=e2e",
+    "format": "biome format --write .",
+    "format:check": "biome format .",
+    "clean": "nx reset && rm -rf node_modules",
+    "prepare": "husky install",
+    "syncpack": "syncpack list-mismatches"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.8.3",
+    "@commitlint/cli": "^18.6.1",
+    "@commitlint/config-conventional": "^18.6.3",
+    "@nx/js": "19.8.4",
+    "@nx/workspace": "19.8.4",
+    "@types/node": "^20.14.12",
+    "husky": "^9.1.4",
+    "nx": "19.8.4",
+    "pnpm": "^8.15.0",
+    "syncpack": "^12.3.2",
+    "typescript": "^5.5.4",
+    "vitest": "^2.0.5"
+  },
+  "nx": {
+    "includedScripts": []
+  }
+}

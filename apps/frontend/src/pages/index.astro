@@ -1,0 +1,32 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Navigation from '../components/Navigation.tsx'
+import Hero from '../components/Hero.tsx'
+import Services from '../components/Services.tsx'
+import About from '../components/About.tsx'
+import Gallery from '../components/Gallery.tsx'
+import Contact from '../components/Contact.tsx'
+import Footer from '../components/Footer.tsx'
+---
+
+<Layout title="Brenda Nails Studio - Professional Nail Art & Beauty Services">
+  <Navigation client:load />
+  <main>
+    <section id="home">
+      <Hero client:load />
+    </section>
+    <section id="services">
+      <Services client:load />
+    </section>
+    <section id="about">
+      <About client:load />
+    </section>
+    <section id="gallery">
+      <Gallery client:load />
+    </section>
+    <section id="contact">
+      <Contact client:load />
+    </section>
+  </main>
+  <Footer client:load />
+</Layout>

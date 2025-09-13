@@ -1,0 +1,108 @@
+name: Deploy to Staging
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '20.16.0'
+  AWS_REGION: 'us-east-1'
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.changes.outputs.frontend }}
+      backend: ${{ steps.changes.outputs.backend }}
+      infra: ${{ steps.changes.outputs.infra }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: changes
+        with:
+          filters: |
+            frontend:
+              - 'apps/frontend/**'
+              - 'packages/**'
+            backend:
+              - 'apps/backend/**'
+              - 'packages/shared/**'
+            infra:
+              - 'infra/**'
+
+  deploy-infrastructure:
+    needs: changes
+    if: needs.changes.outputs.infra == 'true'
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_STAGING }}
+          aws-region: ${{ env.AWS_REGION }}
+          
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.8.0
+          
+      - name: Terraform Init
+        working-directory: infra/stage
+        run: terraform init
+        
+      - name: Terraform Plan
+        working-directory: infra/stage
+        run: terraform plan -out=tfplan
+        
+      - name: Terraform Apply
+        working-directory: infra/stage
+        run: terraform apply -auto-approve tfplan
+
+  build-and-deploy:
+    needs: [changes, deploy-infrastructure]
+    if: always() && (needs.changes.outputs.frontend == 'true' || needs.changes.outputs.backend == 'true')
+    runs-on: ubuntu-latest
+    environment: staging
+    permissions:
+      id-token: write
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 8.15.0
+          
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+        
+      - name: Build packages
+        run: pnpm nx run-many --target=build --projects=@brenda-nails/shared,@brenda-nails/ui
+        
+      - name: Build applications
+        run: pnpm build
+        
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN_STAGING }}
+          aws-region: ${{ env.AWS_REGION }}
+          
+      - name: Deploy to S3
+        if: needs.changes.outputs.frontend == 'true'
+        run: |
+          aws s3 sync apps/frontend/dist/ s3://brenda-nails-stage-website --delete --cache-control max-age=31536000,public
+          aws s3 cp apps/frontend/dist/index.html s3://brenda-nails-stage-website/index.html --cache-control max-age=0,no-cache,no-store,must-revalidate
