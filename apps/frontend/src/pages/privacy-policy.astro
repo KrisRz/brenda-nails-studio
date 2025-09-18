@@ -1,0 +1,109 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Navigation from '../components/Navigation.tsx'
+import Footer from '../components/Footer.tsx'
+---
+
+<Layout title="Privacy Policy - Brenda Nails Studio">
+  <Navigation client:load />
+  <main class="pt-20">
+    <div class="container mx-auto px-4 py-16 max-w-4xl">
+      <div class="prose prose-lg mx-auto">
+        <h1 class="text-4xl font-serif font-bold text-gray-900 mb-8 text-center">Privacy Policy</h1>
+        <p class="text-gray-600 text-center mb-12">Effective date: September 2025</p>
+        
+        <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+          <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+            At Brenda Nails Studio, we value and respect your privacy. This Privacy Policy explains how we collect, use, and protect your personal information when you visit our website or book an appointment.
+          </p>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Information We Collect</h2>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+              <li>Personal details such as your name, phone number, and email address (when booking an appointment or contacting us).</li>
+              <li>Email address if you subscribe to our newsletter.</li>
+              <li>Technical information such as cookies and analytics data (used to improve website performance).</li>
+            </ul>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">How We Use Your Information</h2>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+              <li>To process and confirm bookings.</li>
+              <li>To contact you regarding your appointment or respond to inquiries.</li>
+              <li>To send newsletters and promotions (only if you have opted in).</li>
+            </ul>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Sharing of Data</h2>
+            <p class="text-gray-700 leading-relaxed">
+              We do not sell, rent, or share your personal information with third parties. Your data is only accessible to Brenda Nails Studio for the purposes listed above.
+            </p>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Data Retention</h2>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+              <li>Booking records are kept for up to 12 months.</li>
+              <li>Newsletter subscriptions are kept until you unsubscribe.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Your Rights (GDPR/UK Data Protection Law)</h2>
+            <p class="text-gray-700 mb-4">You have the right to:</p>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-4">
+              <li>Access the personal data we hold about you.</li>
+              <li>Request correction or deletion of your data.</li>
+              <li>Withdraw consent for marketing communications at any time.</li>
+            </ul>
+            <p class="text-gray-700">
+              To exercise your rights, please contact us at: 
+              <a href="mailto:beniahaker@interia.eu" class="text-rose-600 hover:text-rose-700 font-medium">beniahaker@interia.eu</a>
+            </p>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Cookies and Website Analytics</h2>
+            <p class="text-gray-700 leading-relaxed mb-4">
+              Our website uses cookies to improve your browsing experience and help us understand how visitors use our site.
+            </p>
+            
+            <h3 class="text-xl font-serif font-semibold text-gray-900 mb-3">Types of Cookies We Use:</h3>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700 mb-4">
+              <li><strong>Essential Cookies:</strong> Required for the website to function properly (e.g., contact forms, booking system).</li>
+              <li><strong>Analytics Cookies:</strong> Help us understand visitor behavior and improve our website performance.</li>
+              <li><strong>Functional Cookies:</strong> Remember your preferences and enhance your user experience.</li>
+            </ul>
+            
+            <h3 class="text-xl font-serif font-semibold text-gray-900 mb-3">Managing Cookies:</h3>
+            <p class="text-gray-700 leading-relaxed">
+              You can control and delete cookies through your browser settings. However, disabling certain cookies may affect the functionality of our website. Most browsers accept cookies automatically, but you can modify your browser settings to decline cookies if you prefer.
+            </p>
+          </section>
+
+          <div class="bg-rose-50 rounded-2xl p-6 mt-8">
+            <p class="text-gray-700 text-center">
+              If you have any questions about this Privacy Policy, please contact us at 
+              <a href="mailto:beniahaker@interia.eu" class="text-rose-600 hover:text-rose-700 font-medium">beniahaker@interia.eu</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .prose {
+    max-width: none;
+  }
+  .prose h1, .prose h2 {
+    color: inherit;
+  }
+  .prose ul {
+    margin: 0;
+  }
+</style>

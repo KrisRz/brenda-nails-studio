@@ -13,7 +13,7 @@ const { title, description = 'Brenda Nails Studio - Professional nail art and be
     <meta charset="UTF-8" />
     <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
     <meta name="generator" content={Astro.generator} />
     
     <!-- Luxury Typography - Award-winning Industry Standard -->
@@ -25,6 +25,11 @@ const { title, description = 'Brenda Nails Studio - Professional nail art and be
   </head>
   <body>
     <slot />
+    
+    <!-- Brenda Nails Chatbot -->
+    <link rel="stylesheet" href="/chatbot/chatbot.css">
+    <div id="bn-chatbot"></div>
+    <script src="/chatbot/chatbot.js" defer></script>
   </body>
   <style is:global>
     @import '../styles/globals.css';

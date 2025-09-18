@@ -1,40 +1,40 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useEffect, useRef, useState } from 'react'
+import { serviceMemory } from '../utils/serviceMemory'
+import { soundSystem } from '../utils/soundSystem'
 import SectionDivider from './SectionDivider'
 
 gsap.registerPlugin(ScrollTrigger)
 
-const services = [
+// Default services - fallback if API fails
+const defaultServices = [
   {
-    title: 'Classic Manicure',
+    title: 'Gel Manicure',
     description:
-      'Professional nail care with cuticle treatment and polish application',
-    price: 'From £25',
-    duration: '45 min',
-    image:
-      'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=300&fit=crop&crop=hands',
+      'Professional gel manicure with long-lasting shine and durability',
+    price: 'From £30',
+    duration: '70 min',
+    image: '/images/services/1_Gel_Manicure.jpg',
     bgGradient: 'from-rose-400 to-pink-500',
     size: 'large',
   },
   {
-    title: 'Gel Extensions',
+    title: 'Gel Acrylic Nails',
     description:
-      'Long-lasting gel nail extensions with custom shapes and designs',
+      'Extension on form with gel acrylic for strength and custom shapes',
     price: 'From £45',
-    duration: '90 min',
-    image:
-      'https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=400&h=300&fit=crop&crop=hands',
+    duration: '120 min',
+    image: '/images/services/2_Gel_Acrylic_Nails.jpg',
     bgGradient: 'from-purple-400 to-rose-500',
     size: 'large',
   },
   {
-    title: 'Nail Art Design',
-    description: 'Custom artistic designs, patterns, and decorative elements',
-    price: 'From £35',
+    title: 'Gel Manicure Infill (up to 3 weeks)',
+    description: 'Maintenance and refresh for your existing gel manicure',
+    price: 'From £30',
     duration: '60 min',
-    image:
-      'https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=400&h=300&fit=crop&crop=hands',
+    image: '/images/services/3.jpg',
     bgGradient: 'from-pink-400 to-rose-500',
     size: 'small',
   },
@@ -43,39 +43,117 @@ const services = [
     description: 'Timeless elegant French tips with perfect precision',
     price: 'From £30',
     duration: '50 min',
-    image:
-      'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=400&h=300&fit=crop&crop=hands',
+    image: '/images/services/4_French_Manicure.jpg',
     bgGradient: 'from-rose-300 to-pink-400',
     size: 'small',
   },
   {
-    title: 'Pedicure Deluxe',
-    description: 'Complete foot care with exfoliation, massage, and polish',
-    price: 'From £40',
-    duration: '75 min',
-    image:
-      'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=400&h=300&fit=crop&crop=feet',
+    title: 'Gel Manicure Infill (over 3 weeks)',
+    description: 'Extended maintenance for gel manicures requiring more work',
+    price: 'From £35',
+    duration: '90 min',
+    image: '/images/services/5.jpg',
     bgGradient: 'from-rose-400 to-purple-500',
-    size: 'medium',
+    size: 'small',
   },
   {
-    title: 'Acrylic Nails',
+    title: 'Cartoon Art (per nail)',
     description:
-      'Durable acrylic extensions with unlimited design possibilities',
-    price: 'From £50',
-    duration: '120 min',
-    image:
-      'https://images.unsplash.com/photo-1562887284-5c6c2c0b6c01?w=400&h=300&fit=crop&crop=hands',
+      'Custom cartoon designs and artistic elements on individual nails',
+    price: 'From £5',
+    duration: '20 min',
+    image: '/images/services/6_Cartoon.jpg',
     bgGradient: 'from-purple-400 to-pink-500',
-    size: 'medium',
+    size: 'small',
+  },
+  {
+    title: 'Removal only',
+    description: 'Professional nail polish or gel removal service',
+    price: 'From £10',
+    duration: '30 min',
+    image: '/images/services/8.jpg',
+    bgGradient: 'from-gray-400 to-slate-500',
+    size: 'large',
+  },
+  {
+    title: 'Nail repair (per nail)',
+    description: 'Professional repair for damaged or broken nails',
+    price: 'From £5',
+    duration: '15 min',
+    image: '/images/services/7.jpg',
+    bgGradient: 'from-amber-400 to-orange-500',
+    size: 'large',
   },
 ]
 
 export default function Services() {
   const [visibleCards, setVisibleCards] = useState<number[]>([])
+  const [services, setServices] = useState(defaultServices)
+  const [webinyServices, setWebinyServices] = useState<any[]>([])
+  const [isLoading, setIsLoading] = useState(true)
   const sectionRef = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLDivElement>(null)
   const cardsRef = useRef<HTMLDivElement>(null)
+
+  // Fetch services from CMS API (Webiny integration enabled)
+  useEffect(() => {
+    const fetchServices = async () => {
+      try {
+        const response = await fetch(
+          'https://ivn5ztultd.execute-api.eu-west-2.amazonaws.com/cms-data?type=services'
+        )
+        if (response.ok) {
+          const cmsServices = await response.json()
+          console.log('CMS Services:', cmsServices)
+
+          // Keep hardcoded services separate from Webiny services
+          setServices(defaultServices) // Always use hardcoded for main layout
+
+          if (cmsServices && cmsServices.length > 0) {
+            // Filter out Webiny services that match hardcoded ones (avoid duplicates)
+            const uniqueWebinyServices = cmsServices.filter(
+              (webinyService: any) =>
+                !defaultServices.some(
+                  (defaultService) =>
+                    defaultService.title.toLowerCase() ===
+                    webinyService.name.toLowerCase().trim()
+                )
+            )
+
+            // Transform unique Webiny services to frontend format
+            const transformedWebinyServices = uniqueWebinyServices.map(
+              (service: any) => ({
+                title: service.name.trim(),
+                description: service.description,
+                price: `From £${service.price}`,
+                duration: `${service.duration} min`,
+                image: service.image,
+                bgGradient: 'from-indigo-400 to-purple-500', // Distinct color for Webiny
+                size: 'small', // Match row 2 sizing
+              })
+            )
+
+            setWebinyServices(transformedWebinyServices)
+            console.log(
+              `Frontend: ${defaultServices.length} hardcoded + ${transformedWebinyServices.length} Webiny services`
+            )
+          } else {
+            setWebinyServices([])
+          }
+        } else {
+          console.error('Failed to fetch services:', response.status)
+          setServices(defaultServices)
+        }
+      } catch (error) {
+        console.error('Failed to fetch services from CMS:', error)
+        setServices(defaultServices)
+      } finally {
+        setIsLoading(false)
+      }
+    }
+
+    fetchServices()
+  }, [])
 
   useEffect(() => {
     // GSAP Advanced Scroll Animations
@@ -162,7 +240,7 @@ export default function Services() {
 
         // Set up ScrollTrigger with proper reset
         ScrollTrigger.create({
-          trigger: cardsRef.current,
+          trigger: sectionRef.current,
           start: 'top 70%',
           end: 'bottom 30%',
           onEnter: animateCards,
@@ -171,9 +249,16 @@ export default function Services() {
         })
 
         // 3D Hover Effects for Cards
-        cards.forEach((card) => {
+        const allServices = [...services, ...webinyServices]
+        cards.forEach((card, index) => {
           // Mouse enter - 3D tilt effect
           card.addEventListener('mouseenter', (e) => {
+            soundSystem.play('card-hover')
+            serviceMemory.recordServiceInteraction(
+              allServices[index]?.title || 'Unknown Service',
+              'hover'
+            )
+
             gsap.to(card, {
               rotationY: 8,
               rotationX: -8,
@@ -271,7 +356,7 @@ export default function Services() {
     }, sectionRef)
 
     return () => ctx.revert()
-  }, [])
+  }, [services, webinyServices])
 
   const getCardSize = (size: string) => {
     switch (size) {
@@ -297,9 +382,9 @@ export default function Services() {
     >
       {/* Parallax Background Elements */}
       <div className="absolute inset-0 opacity-10">
-        <div className="bg-element absolute top-20 left-10 w-32 h-32 bg-rose-300 rounded-full blur-3xl"></div>
-        <div className="bg-element absolute bottom-40 right-20 w-48 h-48 bg-pink-300 rounded-full blur-3xl"></div>
-        <div className="bg-element absolute top-1/2 left-1/3 w-24 h-24 bg-purple-300 rounded-full blur-2xl"></div>
+        <div className="bg-element absolute top-20 left-10 w-32 h-32 bg-rose-300 rounded-full blur-3xl" />
+        <div className="bg-element absolute bottom-40 right-20 w-48 h-48 bg-pink-300 rounded-full blur-3xl" />
+        <div className="bg-element absolute top-1/2 left-1/3 w-24 h-24 bg-purple-300 rounded-full blur-2xl" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
@@ -316,14 +401,14 @@ export default function Services() {
           </p>
         </div>
 
-        {/* Asymmetric Masonry Grid */}
+        {/* Services Grid - All services including Webiny */}
         <div
           ref={cardsRef}
           className="grid grid-cols-1 md:grid-cols-4 gap-6 auto-rows-min"
         >
-          {services.map((service, index) => (
+          {[...services, ...webinyServices].map((service, index) => (
             <div
-              key={index}
+              key={`service-${service.title}-${index}`}
               data-index={index}
               className={`group relative overflow-hidden rounded-3xl ${getCardSize(service.size)} 
                 transform transition-all duration-700 ease-out transform-3d
@@ -336,15 +421,23 @@ export default function Services() {
               `}
               style={{
                 transitionDelay: `${index * 150}ms`,
-                backgroundImage: `url(${service.image})`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
                 transformStyle: 'preserve-3d',
               }}
             >
+              {/* Background Image */}
+              <img
+                src={service.image}
+                alt={`${service.title} service`}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+
               {/* Light Overlay for text readability */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent"></div>
-              <div className="absolute inset-0 bg-black/10 group-hover:bg-black/5 transition-all duration-500"></div>
+              <div
+                className={`absolute inset-0 bg-gradient-to-t ${index >= services.length ? 'from-purple-900/60' : 'from-black/50'} via-transparent to-transparent`}
+              />
+              <div
+                className={`absolute inset-0 ${index >= services.length ? 'bg-purple-500/20 group-hover:bg-purple-500/10' : 'bg-black/10 group-hover:bg-black/5'} transition-all duration-500`}
+              />
 
               {/* Content */}
               <div className="absolute inset-0 p-6 flex flex-col justify-end text-white">
@@ -367,14 +460,34 @@ export default function Services() {
                 </div>
                 {/* Hover Button */}
                 <div className="absolute inset-x-6 bottom-6 transform translate-y-full group-hover:translate-y-0 transition-transform duration-500">
-                  <button className="w-full bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold py-3 px-6 rounded-2xl hover:bg-white/30 transition-all duration-300 mt-4">
+                  <button
+                    type="button"
+                    className="w-full bg-white/20 backdrop-blur-md border border-white/30 text-white font-semibold py-3 px-6 rounded-2xl hover:bg-white/30 transition-all duration-300 mt-4"
+                    onClick={() => {
+                      soundSystem.play('button-click')
+                      serviceMemory.recordServiceInteraction(
+                        service.title,
+                        'click'
+                      )
+                      // Scroll to booking section
+                      document
+                        .getElementById('contact')
+                        ?.scrollIntoView({ behavior: 'smooth' })
+                    }}
+                  >
                     Book Now
                   </button>
                 </div>
               </div>
 
-              {/* Golden Accent */}
-              <div className="absolute top-4 right-4 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full opacity-80 group-hover:scale-150 transition-transform duration-500"></div>
+              {/* Golden Accent or NEW Badge */}
+              {index >= services.length ? (
+                <div className="absolute top-4 right-4 bg-purple-600 text-white text-xs px-2 py-1 rounded-full font-semibold">
+                  NEW
+                </div>
+              ) : (
+                <div className="absolute top-4 right-4 w-3 h-3 bg-gradient-to-r from-yellow-400 to-orange-400 rounded-full opacity-80 group-hover:scale-150 transition-transform duration-500" />
+              )}
             </div>
           ))}
         </div>

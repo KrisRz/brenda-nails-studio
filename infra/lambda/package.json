@@ -1,0 +1,9 @@
+{
+  "name": "brenda-nails-api",
+  "version": "2.0.0",
+  "type": "module",
+  "dependencies": {
+    "aws-sdk": "^2.1488.0",
+    "uuid": "^9.0.1"
+  }
+}

@@ -1,0 +1,335 @@
+/* Brenda Nails Chatbot Styles */
+#bn-chatbot-root { 
+  position: fixed; 
+  right: 20px; 
+  bottom: 20px; 
+  z-index: 9999; 
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Inter, sans-serif; 
+}
+
+/* Button Styles */
+.bn-btn { 
+  cursor: pointer; 
+  border: 0; 
+  border-radius: 12px; 
+  padding: 8px 12px; 
+  font-weight: 600; 
+  background: linear-gradient(135deg, #ef4b82, #ff80b5); 
+  color: #fff; 
+  box-shadow: 0 8px 24px rgba(239, 75, 130, 0.35); 
+  transition: all 0.3s ease; 
+  font-size: 14px;
+}
+
+.bn-btn:hover { 
+  opacity: 0.95; 
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(239, 75, 130, 0.4); 
+} 
+
+.bn-btn:active { 
+  transform: scale(0.98) translateY(-1px); 
+}
+
+/* Chat Bubble */
+.bn-bubble { 
+  width: 64px; 
+  height: 64px; 
+  border-radius: 50%; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  background: linear-gradient(135deg, #ff80b5, #9089fc); 
+  color: #fff; 
+  font-size: 24px; 
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25); 
+  cursor: pointer;
+  transition: all 0.3s ease;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  backdrop-filter: blur(10px);
+}
+
+.bn-bubble:hover {
+  transform: scale(1.1) translateY(-4px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+}
+
+.bn-bubble:active {
+  transform: scale(1.05) translateY(-2px);
+}
+
+/* Chat Panel */
+.bn-panel { 
+  width: 380px; 
+  max-height: 70vh; 
+  display: none; 
+  flex-direction: column; 
+  margin-bottom: 15px; 
+  border-radius: 20px; 
+  overflow: hidden; 
+  background: rgba(255, 255, 255, 0.95); 
+  backdrop-filter: blur(20px); 
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25); 
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* Header */
+.bn-header { 
+  padding: 16px 20px; 
+  background: linear-gradient(135deg, rgba(255, 128, 181, 0.9), rgba(144, 137, 252, 0.9)); 
+  color: #fff; 
+  font-weight: 700; 
+  display: flex; 
+  align-items: center; 
+  justify-content: space-between; 
+  font-size: 16px;
+  backdrop-filter: blur(10px);
+}
+
+.bn-header .bn-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 18px;
+  font-weight: bold;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+}
+
+.bn-header .bn-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: rotate(90deg);
+}
+
+/* Body */
+.bn-body { 
+  padding: 20px; 
+  overflow-y: auto; 
+  flex: 1;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(239, 75, 130, 0.3) transparent;
+}
+
+.bn-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.bn-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.bn-body::-webkit-scrollbar-thumb {
+  background: rgba(239, 75, 130, 0.3);
+  border-radius: 3px;
+}
+
+.bn-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(239, 75, 130, 0.5);
+}
+
+/* Message */
+.bn-msg { 
+  background: linear-gradient(135deg, #1f2937, #374151); 
+  color: #fff; 
+  padding: 14px 16px; 
+  border-radius: 16px; 
+  margin-bottom: 16px; 
+  font-size: 14px; 
+  line-height: 1.5; 
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  white-space: pre-line;
+  position: relative;
+}
+
+.bn-msg::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(135deg, rgba(255, 128, 181, 0.3), rgba(144, 137, 252, 0.3));
+  border-radius: 18px;
+  z-index: -1;
+}
+
+/* Choices Container */
+.bn-choices { 
+  display: flex; 
+  flex-wrap: wrap; 
+  gap: 10px; 
+}
+
+/* Choice Chips */
+.bn-chip { 
+  padding: 10px 14px; 
+  border-radius: 20px; 
+  background: linear-gradient(135deg, #f8fafc, #f1f5f9); 
+  border: 1px solid #e2e8f0; 
+  font-size: 13px; 
+  cursor: pointer; 
+  transition: all 0.3s ease;
+  font-weight: 500;
+  color: #475569;
+  position: relative;
+  overflow: hidden;
+}
+
+.bn-chip::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.6), transparent);
+  transition: left 0.5s ease;
+}
+
+.bn-chip:hover {
+  background: linear-gradient(135deg, #fff, #f8fafc);
+  border-color: #ff80b5;
+  color: #ef4b82;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(239, 75, 130, 0.2);
+}
+
+.bn-chip:hover::before {
+  left: 100%;
+}
+
+.bn-chip:active {
+  transform: translateY(0);
+  box-shadow: 0 4px 12px rgba(239, 75, 130, 0.3);
+}
+
+/* Typing Indicator */
+.bn-typing {
+  display: flex;
+  align-items: center;
+  padding: 12px 16px;
+  background: rgba(239, 75, 130, 0.1);
+  border-radius: 16px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #ef4b82;
+  font-style: italic;
+}
+
+.bn-typing::before {
+  content: '💭';
+  margin-right: 8px;
+  animation: pulse 1.5s infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+/* Mobile Responsive */
+@media (max-width: 480px) {
+  #bn-chatbot-root {
+    right: 15px;
+    bottom: 15px;
+  }
+  
+  .bn-panel { 
+    width: calc(100vw - 30px); 
+    max-width: 350px;
+  }
+  
+  .bn-bubble {
+    width: 56px;
+    height: 56px;
+    font-size: 20px;
+  }
+  
+  .bn-chip {
+    font-size: 12px;
+    padding: 8px 12px;
+  }
+}
+
+@media (max-width: 360px) {
+  .bn-panel {
+    width: calc(100vw - 20px);
+    right: 10px;
+    left: 10px;
+  }
+  
+  #bn-chatbot-root {
+    right: 10px;
+    bottom: 10px;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  .bn-panel {
+    border: 2px solid #000;
+    background: #fff;
+  }
+  
+  .bn-msg {
+    background: #000;
+    color: #fff;
+    border: 1px solid #333;
+  }
+  
+  .bn-chip {
+    border: 2px solid #000;
+    background: #fff;
+    color: #000;
+  }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  
+  .bn-chip::before {
+    display: none;
+  }
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .bn-panel {
+    background: rgba(17, 24, 39, 0.95);
+    border-color: rgba(75, 85, 99, 0.3);
+  }
+  
+  .bn-chip {
+    background: linear-gradient(135deg, #374151, #4b5563);
+    border-color: #6b7280;
+    color: #e5e7eb;
+  }
+  
+  .bn-chip:hover {
+    background: linear-gradient(135deg, #4b5563, #6b7280);
+    border-color: #ff80b5;
+    color: #ff80b5;
+  }
+}

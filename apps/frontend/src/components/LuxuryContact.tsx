@@ -1,5 +1,7 @@
 import { gsap } from 'gsap'
 import { useEffect, useRef, useState } from 'react'
+import { soundSystem } from '../utils/soundSystem'
+import EnhancedSuccessState from './ui/EnhancedSuccessState'
 import FloatingInput from './ui/FloatingInput'
 import RippleButton from './ui/RippleButton'
 import SuccessToast from './ui/SuccessToast'
@@ -19,6 +21,7 @@ export default function LuxuryContact() {
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
+  const [showEnhancedSuccess, setShowEnhancedSuccess] = useState(false)
   const stepRef = useRef<HTMLDivElement>(null)
 
   const totalSteps = 4
@@ -26,15 +29,15 @@ export default function LuxuryContact() {
   const steps = [
     {
       id: 1,
-      title: "Let's get to know you",
-      subtitle: 'Tell us about yourself',
-      icon: '👋',
+      title: 'Begin Your Luxury Journey',
+      subtitle: 'Tell us about your vision for perfect nails',
+      icon: '✨',
     },
     {
       id: 2,
       title: 'Choose your service',
       subtitle: 'Select your perfect treatment',
-      icon: '💅',
+      icon: '👑',
     },
     {
       id: 3,
@@ -55,7 +58,7 @@ export default function LuxuryContact() {
       name: 'Classic Manicure',
       price: '£25',
       duration: '45 min',
-      emoji: '💅',
+      emoji: '👑',
       description: 'Professional nail care with cuticle treatment',
     },
     {
@@ -115,6 +118,7 @@ export default function LuxuryContact() {
 
   const nextStep = () => {
     if (validateCurrentStep()) {
+      soundSystem.play('form-step')
       setFormStep((prev) => Math.min(prev + 1, totalSteps))
     }
   }
@@ -165,7 +169,8 @@ export default function LuxuryContact() {
     setIsSubmitting(true)
     await new Promise((resolve) => setTimeout(resolve, 2000))
     setIsSubmitting(false)
-    setShowSuccess(true)
+    soundSystem.play('form-success')
+    setShowEnhancedSuccess(true)
 
     // Reset form
     setFormData({
@@ -479,7 +484,7 @@ export default function LuxuryContact() {
                   >
                     <span className="text-xl">✨</span>
                     {isSubmitting ? 'Booking...' : 'Complete Booking'}
-                    <span className="text-xl">💅</span>
+                    <span className="text-xl">👑</span>
                   </RippleButton>
                 )}
               </div>
@@ -487,6 +492,13 @@ export default function LuxuryContact() {
           </div>
         </div>
       </div>
+
+      {/* Enhanced Success State */}
+      <EnhancedSuccessState
+        isVisible={showEnhancedSuccess}
+        onComplete={() => setShowEnhancedSuccess(false)}
+        type="booking"
+      />
 
       {/* Success Toast */}
       <SuccessToast

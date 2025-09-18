@@ -1,16 +1,31 @@
 import { useEffect, useState } from 'react'
+import { soundSystem } from '../utils/soundSystem'
 import { Button } from './ui/button'
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
+  const [isHomePage, setIsHomePage] = useState(true)
+
+  // Check if we're on the home page
+  useEffect(() => {
+    const checkHomePage = () => {
+      const path = window.location.pathname
+      setIsHomePage(path === '/' || path === '/index.html')
+    }
+
+    checkHomePage()
+    // Listen for navigation changes
+    window.addEventListener('popstate', checkHomePage)
+    return () => window.removeEventListener('popstate', checkHomePage)
+  }, [])
 
   const navItems = [
-    { name: 'Home', href: '#home' },
-    { name: 'Services', href: '#services' },
-    { name: 'About', href: '#about' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Home', href: isHomePage ? '#home' : '/#home' },
+    { name: 'Services', href: isHomePage ? '#services' : '/#services' },
+    { name: 'About', href: isHomePage ? '#about' : '/#about' },
+    { name: 'Gallery', href: isHomePage ? '#gallery' : '/#gallery' },
+    { name: 'Contact', href: isHomePage ? '#contact' : '/#contact' },
   ]
 
   useEffect(() => {
@@ -35,40 +50,50 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <span className="text-2xl font-bold text-rose-600">💅</span>
-            <span
-              className={`ml-2 text-xl font-bold transition-colors duration-300 ${
-                isScrolled ? 'text-gray-900' : 'text-white drop-shadow-lg'
-              }`}
-            >
-              Brenda Nails
-            </span>
+            <span className="text-2xl mr-3 animate-pulse">👑</span>
+            <div className="flex flex-col">
+              <span
+                className={`text-lg font-serif font-bold tracking-wide transition-all duration-300 ${
+                  isScrolled
+                    ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 bg-clip-text text-transparent'
+                    : 'text-white drop-shadow-2xl'
+                }`}
+              >
+                BRENDA
+              </span>
+              <span
+                className={`text-xs font-light tracking-[0.2em] -mt-1 transition-all duration-300 ${
+                  isScrolled ? 'text-rose-500' : 'text-rose-200 drop-shadow-lg'
+                }`}
+              >
+                NAILS STUDIO
+              </span>
+            </div>
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-10">
             {navItems.map((item) => (
               <a
                 key={item.name}
                 href={item.href}
-                className={`font-medium transition-colors duration-300 ${
+                className={`font-serif font-medium tracking-wide text-sm uppercase transition-all duration-300 hover:scale-105 relative group ${
                   isScrolled
-                    ? 'text-gray-700 hover:text-rose-600'
-                    : 'text-white hover:text-rose-300 drop-shadow-lg'
+                    ? 'text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-rose-500 hover:to-purple-600 hover:bg-clip-text'
+                    : 'text-white hover:text-rose-200 drop-shadow-lg'
                 }`}
+                onMouseEnter={() => soundSystem.play('nav-hover')}
               >
                 {item.name}
+                <span
+                  className={`absolute -bottom-1 left-0 w-0 h-0.5 transition-all duration-300 group-hover:w-full ${
+                    isScrolled
+                      ? 'bg-gradient-to-r from-rose-500 to-purple-600'
+                      : 'bg-rose-200'
+                  }`}
+                ></span>
               </a>
             ))}
-          </div>
-
-          {/* CTA Button */}
-          <div className="hidden md:block">
-            <a href="#contact">
-              <Button className="bg-rose-600 hover:bg-rose-700">
-                Book Now
-              </Button>
-            </a>
           </div>
 
           {/* Mobile menu button */}
@@ -121,21 +146,17 @@ export default function Navigation() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className={`font-medium transition-colors duration-300 ${
+                  className={`font-serif font-medium tracking-wide text-sm uppercase transition-all duration-300 hover:scale-105 ${
                     isScrolled
-                      ? 'text-gray-700 hover:text-rose-600'
-                      : 'text-white hover:text-rose-300'
+                      ? 'text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-rose-500 hover:to-purple-600 hover:bg-clip-text'
+                      : 'text-white hover:text-rose-200'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
+                  onMouseEnter={() => soundSystem.play('nav-hover')}
                 >
                   {item.name}
                 </a>
               ))}
-              <a href="#contact" onClick={() => setIsMenuOpen(false)}>
-                <Button className="bg-rose-600 hover:bg-rose-700 w-full mt-4">
-                  Book Now
-                </Button>
-              </a>
             </div>
           </div>
         )}

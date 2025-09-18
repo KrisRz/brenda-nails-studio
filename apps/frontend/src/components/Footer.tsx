@@ -1,3 +1,4 @@
+import { FaFacebookF, FaInstagram } from 'react-icons/fa'
 import RippleButton from './ui/RippleButton'
 
 export default function Footer() {
@@ -24,7 +25,7 @@ export default function Footer() {
             {/* Brand Header */}
             <div>
               <div className="flex items-center mb-4">
-                <span className="text-4xl mr-3">💅</span>
+                <span className="text-4xl mr-3">👑</span>
                 <span className="text-3xl font-serif font-bold text-gray-900 luxury-heading">
                   Brenda Nails Studio
                 </span>
@@ -113,7 +114,7 @@ export default function Footer() {
                     href="#services"
                     className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans"
                   >
-                    Classic Manicure
+                    Gel Manicure
                   </a>
                 </li>
                 <li>
@@ -121,7 +122,7 @@ export default function Footer() {
                     href="#services"
                     className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans"
                   >
-                    Gel Extensions
+                    Gel Acrylic Nails
                   </a>
                 </li>
                 <li>
@@ -129,7 +130,7 @@ export default function Footer() {
                     href="#services"
                     className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans"
                   >
-                    Nail Art Design
+                    French Manicure
                   </a>
                 </li>
                 <li>
@@ -137,7 +138,7 @@ export default function Footer() {
                     href="#services"
                     className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans"
                   >
-                    Bridal Services
+                    Cartoon Art
                   </a>
                 </li>
                 <li>
@@ -175,7 +176,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/privacy-policy"
                     className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans text-sm"
                   >
                     Privacy Policy
@@ -183,7 +184,7 @@ export default function Footer() {
                 </li>
                 <li>
                   <a
-                    href="#"
+                    href="/terms-of-service"
                     className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans text-sm"
                   >
                     Terms of Service
@@ -257,26 +258,6 @@ export default function Footer() {
               </div>
             </div>
 
-            {/* Newsletter */}
-            <div>
-              <h4 className="text-lg font-serif font-bold mb-4 text-gray-900">
-                Nail Art Inspiration
-              </h4>
-              <p className="text-gray-600 text-sm mb-4 font-sans">
-                Get exclusive nail art tips, seasonal trends & special offers
-              </p>
-              <div className="flex gap-2">
-                <input
-                  type="email"
-                  placeholder="your@email.com"
-                  className="flex-1 px-4 py-3 bg-white/50 backdrop-blur-sm border-2 border-white/40 rounded-xl focus:outline-none focus:ring-4 focus:ring-rose-500/20 focus:border-rose-500 transition-all duration-300 placeholder-gray-500 text-gray-800 font-sans"
-                />
-                <RippleButton variant="primary" size="sm" className="shadow-lg">
-                  Join
-                </RippleButton>
-              </div>
-            </div>
-
             {/* Social Media */}
             <div>
               <h4 className="text-lg font-serif font-bold mb-4 text-gray-900">
@@ -284,35 +265,26 @@ export default function Footer() {
               </h4>
               <div className="flex gap-3">
                 <a
-                  href="https://instagram.com/brendanails"
+                  href="https://www.instagram.com/brenda_nails_uk/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-gradient-to-br from-pink-500 to-rose-600 rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl hover-glow"
                   title="Instagram - Daily nail art"
                 >
-                  📸
+                  <FaInstagram className="w-5 h-5" />
                 </a>
                 <a
-                  href="https://facebook.com/brendanails"
+                  href="https://www.facebook.com/brendanailsmobile"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-12 h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl hover-glow"
                   title="Facebook - Client reviews"
                 >
-                  👍
-                </a>
-                <a
-                  href="https://tiktok.com/@brendanails"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-12 h-12 bg-gradient-to-br from-purple-500 to-pink-600 rounded-2xl flex items-center justify-center text-white hover:scale-110 transition-all duration-300 shadow-lg hover:shadow-xl hover-glow"
-                  title="TikTok - Nail tutorials"
-                >
-                  🎬
+                  <FaFacebookF className="w-5 h-5" />
                 </a>
               </div>
               <p className="text-xs text-gray-500 mt-3 font-sans">
-                @brendanails • Daily nail art inspiration & tutorials
+                @brenda_nails_uk • Daily nail art inspiration & tutorials
               </p>
             </div>
           </div>
@@ -332,22 +304,16 @@ export default function Footer() {
             <div className="flex flex-col md:flex-row items-center space-y-2 md:space-y-0 md:space-x-6">
               <div className="flex space-x-4 text-xs">
                 <a
-                  href="#"
+                  href="/privacy-policy"
                   className="text-gray-500 hover:text-rose-600 transition-colors hover-text-slide font-sans"
                 >
                   Privacy Policy
                 </a>
                 <a
-                  href="#"
+                  href="/terms-of-service"
                   className="text-gray-500 hover:text-rose-600 transition-colors hover-text-slide font-sans"
                 >
                   Terms of Service
-                </a>
-                <a
-                  href="#"
-                  className="text-gray-500 hover:text-rose-600 transition-colors hover-text-slide font-sans"
-                >
-                  Cookie Policy
                 </a>
               </div>
               <div className="text-center">

@@ -1,0 +1,803 @@
+{
+  "start": "welcome",
+  "nodes": {
+    "welcome": {
+      "msg": "DYNAMIC_GREETING",
+      "choices": [
+        { "label": "💅 Book an appointment", "next": "booking_flow" },
+        { "label": "💎 See our services & prices", "next": "services_menu" },
+        { "label": "📍 Studio location & directions", "next": "location_info" },
+        { "label": "🕒 Opening hours", "next": "hours_info" },
+        { "label": "📞 Contact information", "next": "contact_options" },
+        { "label": "❓ Frequently asked questions", "next": "faq_menu" },
+        { "label": "🎨 View our gallery", "url": "#gallery" },
+        { "label": "ℹ️ About Brenda Nails Studio", "url": "#about" }
+      ]
+    },
+
+    "booking_flow": {
+      "msg": "Ready to book your perfect nails? ✨",
+      "choices": [
+        { "label": "📅 Book online now", "url": "#contact" },
+        {
+          "label": "📞 Call to book (075111201840)",
+          "url": "tel:075111201840"
+        },
+        {
+          "label": "✉️ Email to book",
+          "url": "mailto:beniahaker@interia.eu?subject=Brenda%20Nails%20-%20Appointment%20Booking"
+        },
+        { "label": "💡 What service do I need?", "next": "service_help" },
+        { "label": "📅 Real-time booking", "next": "real_booking_start" },
+        { "label": "🕒 Check availability", "next": "availability_check" },
+        { "label": "⬅️ Back to main menu", "next": "welcome" }
+      ]
+    },
+
+    "services_menu": {
+      "msg": "Our luxury nail treatments:",
+      "choices": [
+        { "label": "💎 Premium Services", "next": "premium_services" },
+        { "label": "✨ Classic Treatments", "next": "classic_services" },
+        { "label": "🎨 Nail Art & Design", "next": "art_services" },
+        { "label": "🔧 Maintenance & Repairs", "next": "maintenance_services" },
+        { "label": "💰 Price list overview", "next": "pricing_overview" },
+        { "label": "📋 View full services page", "url": "#services" },
+        { "label": "⬅️ Back to main menu", "next": "welcome" }
+      ]
+    },
+
+    "premium_services": {
+      "msg": "Our signature premium treatments:",
+      "choices": [
+        {
+          "label": "💎 Gel Acrylic Nails - £45 (120min)",
+          "next": "gel_acrylic_info"
+        },
+        { "label": "🤍 French Manicure - £30 (50min)", "next": "french_info" },
+        {
+          "label": "👑 Gel Manicure - £30 (70min)",
+          "next": "gel_manicure_info"
+        },
+        {
+          "label": "🎨 Cartoon Art (per nail) - £5 (20min)",
+          "next": "cartoon_art_info"
+        },
+        { "label": "📅 Book any of these", "url": "#contact" },
+        { "label": "⬅️ Back to services", "next": "services_menu" }
+      ]
+    },
+
+    "classic_services": {
+      "msg": "Our classic nail care services:",
+      "choices": [
+        {
+          "label": "💅 Classic Manicure - £25 (45min)",
+          "next": "classic_manicure_info"
+        },
+        {
+          "label": "🦶 Pedicure Deluxe - £40 (75min)",
+          "next": "pedicure_info"
+        },
+        { "label": "💎 Acrylic Nails - £50 (120min)", "next": "acrylic_info" },
+        { "label": "📅 Book any of these", "url": "#contact" },
+        { "label": "⬅️ Back to services", "next": "services_menu" }
+      ]
+    },
+
+    "art_services": {
+      "msg": "Express your creativity with custom nail art:",
+      "choices": [
+        {
+          "label": "🎨 Custom Nail Art Design - £35 (60min)",
+          "next": "custom_art_info"
+        },
+        {
+          "label": "🎭 Cartoon Characters (per nail) - £5",
+          "next": "cartoon_art_info"
+        },
+        { "label": "🖼️ View our gallery for inspiration", "url": "#gallery" },
+        {
+          "label": "💬 Discuss custom design ideas",
+          "url": "mailto:beniahaker@interia.eu?subject=Custom%20Nail%20Art%20Design%20Inquiry"
+        },
+        { "label": "📅 Book art session", "url": "#contact" },
+        { "label": "⬅️ Back to services", "next": "services_menu" }
+      ]
+    },
+
+    "maintenance_services": {
+      "msg": "Keep your nails looking perfect:",
+      "choices": [
+        {
+          "label": "🔄 Gel Infill (≤3 weeks) - £30 (60min)",
+          "next": "infill_early_info"
+        },
+        {
+          "label": "🔄 Gel Infill (>3 weeks) - £35 (90min)",
+          "next": "infill_late_info"
+        },
+        {
+          "label": "🔧 Nail Repair (per nail) - £5 (15min)",
+          "next": "repair_info"
+        },
+        { "label": "🗑️ Removal only - £10 (30min)", "next": "removal_info" },
+        {
+          "label": "❓ Which maintenance do I need?",
+          "next": "maintenance_help"
+        },
+        { "label": "📅 Book maintenance", "url": "#contact" },
+        { "label": "⬅️ Back to services", "next": "services_menu" }
+      ]
+    },
+
+    "gel_acrylic_info": {
+      "msg": "💎 Gel Acrylic Nails (£45, 120min)\n\nExtension on form with gel acrylic for strength and custom shapes. Perfect for those wanting longer, durable nails with endless design possibilities.",
+      "image": "/images/services/2_Gel_Acrylic_Nails.jpg",
+      "choices": [
+        { "label": "📅 Book this service", "url": "#contact" },
+        { "label": "🎨 See examples in gallery", "url": "#gallery" },
+        {
+          "label": "💬 Ask about custom shapes",
+          "url": "mailto:beniahaker@interia.eu?subject=Gel%20Acrylic%20Custom%20Shapes%20Inquiry"
+        },
+        { "label": "⬅️ Back to premium services", "next": "premium_services" }
+      ]
+    },
+
+    "french_info": {
+      "msg": "🤍 French Manicure (£30, 50min)\n\nTimeless elegant French tips with perfect precision. Classic white tips or modern colored variations available.",
+      "image": "/images/services/4_French_Manicure.jpg",
+      "choices": [
+        { "label": "📅 Book French manicure", "url": "#contact" },
+        { "label": "🎨 See French styles in gallery", "url": "#gallery" },
+        {
+          "label": "💬 Ask about colored French tips",
+          "url": "mailto:beniahaker@interia.eu?subject=Colored%20French%20Tips%20Options"
+        },
+        { "label": "⬅️ Back to premium services", "next": "premium_services" }
+      ]
+    },
+
+    "gel_manicure_info": {
+      "msg": "👑 Gel Manicure (£30, 70min)\n\nProfessional gel manicure with long-lasting shine and durability. Perfect for busy lifestyles, lasting 2-3 weeks.",
+      "image": "/images/services/1_Gel_Manicure.jpg",
+      "choices": [
+        { "label": "📅 Book gel manicure", "url": "#contact" },
+        { "label": "🎨 See gel colors in gallery", "url": "#gallery" },
+        {
+          "label": "🔄 Learn about gel infills",
+          "next": "maintenance_services"
+        },
+        { "label": "⬅️ Back to premium services", "next": "premium_services" }
+      ]
+    },
+
+    "cartoon_art_info": {
+      "msg": "🎨 Cartoon Art (£5 per nail, 20min each)\n\nCustom cartoon designs and artistic elements. From Disney characters to anime, we bring your favorite characters to life on your nails!",
+      "image": "/images/services/6_Cartoon.jpg",
+      "choices": [
+        { "label": "📅 Book cartoon art session", "url": "#contact" },
+        { "label": "🖼️ See cartoon examples", "url": "#gallery" },
+        {
+          "label": "💬 Request specific character",
+          "url": "mailto:beniahaker@interia.eu?subject=Custom%20Cartoon%20Character%20Request"
+        },
+        { "label": "⬅️ Back to art services", "next": "art_services" }
+      ]
+    },
+
+    "maintenance_help": {
+      "msg": "Let me help you choose the right maintenance:",
+      "choices": [
+        {
+          "label": "🆕 My nails are 1-3 weeks old",
+          "next": "infill_early_info"
+        },
+        {
+          "label": "⏰ My nails are over 3 weeks old",
+          "next": "infill_late_info"
+        },
+        { "label": "💔 I have a broken/damaged nail", "next": "repair_info" },
+        {
+          "label": "🗑️ I want to remove my nails completely",
+          "next": "removal_info"
+        },
+        { "label": "❓ I'm not sure, let me call", "url": "tel:075111201840" },
+        { "label": "⬅️ Back to maintenance", "next": "maintenance_services" }
+      ]
+    },
+
+    "infill_early_info": {
+      "msg": "🔄 Gel Infill (≤3 weeks) - £30 (60min)\n\nPerfect timing! Your nails just need a refresh. We'll fill the growth area and reapply gel for a fresh look.",
+      "choices": [
+        { "label": "📅 Book early infill", "url": "#contact" },
+        {
+          "label": "⏰ When should I book next infill?",
+          "next": "infill_timing"
+        },
+        { "label": "⬅️ Back to maintenance", "next": "maintenance_services" }
+      ]
+    },
+
+    "infill_late_info": {
+      "msg": "🔄 Gel Infill (>3 weeks) - £35 (90min)\n\nNo worries! We'll need extra time to properly maintain your nails. This includes more extensive cuticle work and reshaping.",
+      "choices": [
+        { "label": "📅 Book late infill", "url": "#contact" },
+        {
+          "label": "💡 How to maintain nails longer",
+          "next": "nail_care_tips"
+        },
+        { "label": "⬅️ Back to maintenance", "next": "maintenance_services" }
+      ]
+    },
+
+    "repair_info": {
+      "msg": "🔧 Nail Repair (£5 per nail, 15min)\n\nAccidents happen! We can fix broken, cracked, or damaged nails quickly and seamlessly.",
+      "choices": [
+        { "label": "📅 Book nail repair", "url": "#contact" },
+        { "label": "🚨 Emergency repair needed", "url": "tel:075111201840" },
+        { "label": "💡 How to prevent breaks", "next": "nail_care_tips" },
+        { "label": "⬅️ Back to maintenance", "next": "maintenance_services" }
+      ]
+    },
+
+    "removal_info": {
+      "msg": "🗑️ Removal Only (£10, 30min)\n\nSafe, professional removal of gel, acrylic, or regular polish. We'll condition your natural nails afterward.",
+      "choices": [
+        { "label": "📅 Book removal service", "url": "#contact" },
+        { "label": "🔄 Remove and get new nails", "next": "removal_and_new" },
+        {
+          "label": "💅 What to expect after removal",
+          "next": "post_removal_care"
+        },
+        { "label": "⬅️ Back to maintenance", "next": "maintenance_services" }
+      ]
+    },
+
+    "removal_and_new": {
+      "msg": "Perfect! We can remove your current nails and apply new ones in the same appointment. Which service would you like?",
+      "choices": [
+        { "label": "💎 Remove + Gel Acrylic (£55 total)", "url": "#contact" },
+        { "label": "👑 Remove + Gel Manicure (£40 total)", "url": "#contact" },
+        {
+          "label": "🤍 Remove + French Manicure (£40 total)",
+          "url": "#contact"
+        },
+        { "label": "📋 See all services", "next": "services_menu" },
+        { "label": "⬅️ Back to removal info", "next": "removal_info" }
+      ]
+    },
+
+    "nail_care_tips": {
+      "msg": "💡 Nail Care Tips:\n\n• Use cuticle oil daily\n• Wear gloves for cleaning\n• Avoid using nails as tools\n• Book infills every 2-3 weeks\n• Keep hands moisturized",
+      "choices": [
+        { "label": "📅 Book maintenance appointment", "url": "#contact" },
+        {
+          "label": "🛒 Ask about aftercare products",
+          "url": "mailto:beniahaker@interia.eu?subject=Nail%20Care%20Products%20Inquiry"
+        },
+        { "label": "⬅️ Back to maintenance", "next": "maintenance_services" }
+      ]
+    },
+
+    "pricing_overview": {
+      "msg": "💰 Our Pricing:\n\n💎 Premium: £30-£50\n✨ Classic: £25-£40  \n🎨 Art: £5/nail\n🔧 Maintenance: £10-£35\n\nAll prices include consultation and aftercare advice.",
+      "choices": [
+        { "label": "📋 See detailed services", "url": "#services" },
+        { "label": "💳 Payment methods accepted", "next": "payment_info" },
+        { "label": "📅 Book appointment", "url": "#contact" },
+        { "label": "⬅️ Back to services", "next": "services_menu" }
+      ]
+    },
+
+    "payment_info": {
+      "msg": "💳 We accept:\n\n• Cash\n• Card payments\n• Bank transfers\n• Apple Pay / Google Pay\n\nDeposit may be required for first appointments.",
+      "choices": [
+        { "label": "📅 Book appointment", "url": "#contact" },
+        {
+          "label": "💬 Ask about deposit policy",
+          "url": "mailto:beniahaker@interia.eu?subject=Deposit%20Policy%20Question"
+        },
+        { "label": "⬅️ Back to pricing", "next": "pricing_overview" }
+      ]
+    },
+
+    "location_info": {
+      "msg": "📍 Brenda Nails Studio\n11 Bevington Close\nMidsomer Norton\nBA3 2FD (Radstock area)\n\nEasy parking available!",
+      "choices": [
+        {
+          "label": "🗺️ Open in Apple Maps",
+          "url": "https://maps.apple.com/?q=11%20Bevington%20Close%20BA3%202FD"
+        },
+        {
+          "label": "📍 Open in Google Maps",
+          "url": "https://www.google.com/maps/search/?api=1&query=11+Bevington+Close+BA3+2FD"
+        },
+        { "label": "🚗 Parking information", "next": "parking_info" },
+        { "label": "🚌 Public transport", "next": "transport_info" },
+        { "label": "📞 Call for directions", "url": "tel:075111201840" },
+        { "label": "⬅️ Back to main menu", "next": "welcome" }
+      ]
+    },
+
+    "parking_info": {
+      "msg": "🚗 Parking at Brenda Nails:\n\n• Free parking available\n• Right outside the studio\n• Easy access\n• No time restrictions\n\nYou won't have any parking worries!",
+      "choices": [
+        {
+          "label": "🗺️ See location on map",
+          "url": "https://maps.apple.com/?q=11%20Bevington%20Close%20BA3%202FD"
+        },
+        { "label": "📅 Book appointment", "url": "#contact" },
+        { "label": "⬅️ Back to location info", "next": "location_info" }
+      ]
+    },
+
+    "transport_info": {
+      "msg": "🚌 Getting here by public transport:\n\n• Bus routes serve Midsomer Norton\n• Short walk from main bus stops\n• Radstock train station nearby\n• Taxi services available\n\nCall us for specific directions!",
+      "choices": [
+        {
+          "label": "📞 Call for detailed directions",
+          "url": "tel:075111201840"
+        },
+        {
+          "label": "🗺️ See location on map",
+          "url": "https://maps.apple.com/?q=11%20Bevington%20Close%20BA3%202FD"
+        },
+        { "label": "⬅️ Back to location info", "next": "location_info" }
+      ]
+    },
+
+    "hours_info": {
+      "msg": "🕒 Opening Hours:\n\nMonday - Friday: 10:00 - 17:00\nSaturday & Sunday: By appointment only\n\nWe're flexible with timing for our valued clients!",
+      "choices": [
+        { "label": "📅 Book during regular hours", "url": "#contact" },
+        {
+          "label": "🌅 Request weekend appointment",
+          "next": "weekend_booking"
+        },
+        {
+          "label": "🌙 Ask about evening appointments",
+          "next": "evening_booking"
+        },
+        {
+          "label": "📞 Call to discuss availability",
+          "url": "tel:075111201840"
+        },
+        { "label": "⬅️ Back to main menu", "next": "welcome" }
+      ]
+    },
+
+    "weekend_booking": {
+      "msg": "🌅 Weekend Appointments:\n\nWe offer Saturday and Sunday appointments by special arrangement. Perfect for those with busy weekday schedules!",
+      "choices": [
+        {
+          "label": "📅 Request weekend slot",
+          "url": "mailto:beniahaker@interia.eu?subject=Weekend%20Appointment%20Request"
+        },
+        {
+          "label": "📞 Call to arrange weekend time",
+          "url": "tel:075111201840"
+        },
+        {
+          "label": "💰 Weekend pricing information",
+          "next": "weekend_pricing"
+        },
+        { "label": "⬅️ Back to hours info", "next": "hours_info" }
+      ]
+    },
+
+    "evening_booking": {
+      "msg": "🌙 Evening Appointments:\n\nWe can sometimes accommodate evening appointments for our regular clients. Let's discuss what works for you!",
+      "choices": [
+        {
+          "label": "📞 Call to discuss evening times",
+          "url": "tel:075111201840"
+        },
+        {
+          "label": "✉️ Email about evening availability",
+          "url": "mailto:beniahaker@interia.eu?subject=Evening%20Appointment%20Inquiry"
+        },
+        { "label": "⬅️ Back to hours info", "next": "hours_info" }
+      ]
+    },
+
+    "weekend_pricing": {
+      "msg": "💰 Weekend appointments are available at standard pricing. No extra charges for Saturday/Sunday slots!\n\nWe believe luxury should be accessible when you need it.",
+      "choices": [
+        {
+          "label": "📅 Book weekend appointment",
+          "url": "mailto:beniahaker@interia.eu?subject=Weekend%20Appointment%20Request"
+        },
+        { "label": "📋 See our regular prices", "next": "pricing_overview" },
+        { "label": "⬅️ Back to weekend booking", "next": "weekend_booking" }
+      ]
+    },
+
+    "contact_options": {
+      "msg": "📞 Contact Brenda Nails Studio:",
+      "choices": [
+        { "label": "📞 Call now (075111201840)", "url": "tel:075111201840" },
+        {
+          "label": "✉️ Send email",
+          "url": "mailto:beniahaker@interia.eu?subject=Brenda%20Nails%20Studio%20Inquiry"
+        },
+        { "label": "📱 WhatsApp/Text", "url": "sms:075111201840" },
+        { "label": "📋 Online booking form", "url": "#contact" },
+        { "label": "📸 Follow us on social media", "next": "social_media" },
+        { "label": "⬅️ Back to main menu", "next": "welcome" }
+      ]
+    },
+
+    "social_media": {
+      "msg": "📸 Follow us for daily nail inspiration:\n\n• Instagram: @brendanailsstudio\n• Facebook: Brenda Nails Studio\n• See our latest work and client transformations!",
+      "choices": [
+        {
+          "label": "📸 View our Instagram",
+          "url": "https://instagram.com/brendanailsstudio"
+        },
+        {
+          "label": "👍 Like us on Facebook",
+          "url": "https://facebook.com/brendanailsstudio"
+        },
+        { "label": "🎨 View our gallery", "url": "#gallery" },
+        { "label": "⬅️ Back to contact options", "next": "contact_options" }
+      ]
+    },
+
+    "availability_info": {
+      "msg": "📅 Current Availability:\n\n• Weekdays: Usually same-week booking\n• Weekends: Book 1-2 weeks ahead\n• Express repairs: Often same-day\n• New clients: Welcome anytime!",
+      "choices": [
+        { "label": "📅 Check specific dates", "url": "#contact" },
+        {
+          "label": "📞 Call for immediate availability",
+          "url": "tel:075111201840"
+        },
+        { "label": "🚨 Emergency repair needed", "url": "tel:075111201840" },
+        { "label": "⬅️ Back to booking flow", "next": "booking_flow" }
+      ]
+    },
+
+    "service_help": {
+      "msg": "💡 Not sure which service you need? Let me help:",
+      "choices": [
+        {
+          "label": "🆕 I'm new to gel/acrylic nails",
+          "next": "beginner_guide"
+        },
+        { "label": "🔄 I need maintenance/infill", "next": "maintenance_help" },
+        { "label": "💔 I have damaged nails", "next": "damage_assessment" },
+        { "label": "🎨 I want nail art/design", "next": "art_consultation" },
+        {
+          "label": "🤔 I want to change nail shape/length",
+          "next": "shape_consultation"
+        },
+        { "label": "📞 Speak to Brenda directly", "url": "tel:075111201840" },
+        { "label": "⬅️ Back to booking flow", "next": "booking_flow" }
+      ]
+    },
+
+    "beginner_guide": {
+      "msg": "🆕 New to professional nails? Perfect!\n\nI recommend starting with:\n• Gel Manicure (£30) - natural length\n• French Manicure (£30) - classic look\n• Short Gel Acrylic (£45) - if you want length",
+      "choices": [
+        { "label": "👑 Book Gel Manicure", "url": "#contact" },
+        { "label": "🤍 Book French Manicure", "url": "#contact" },
+        { "label": "💎 Book Short Gel Acrylic", "url": "#contact" },
+        {
+          "label": "💬 Discuss options with Brenda",
+          "url": "tel:075111201840"
+        },
+        { "label": "⬅️ Back to service help", "next": "service_help" }
+      ]
+    },
+
+    "damage_assessment": {
+      "msg": "💔 Let me help assess your nail damage:",
+      "choices": [
+        { "label": "🔨 One or two nails broken", "next": "minor_damage" },
+        { "label": "😰 Multiple nails damaged", "next": "major_damage" },
+        { "label": "🗑️ Old nails lifting/peeling", "next": "lifting_nails" },
+        {
+          "label": "🦠 Possible infection/irritation",
+          "next": "health_concern"
+        },
+        { "label": "📞 Describe damage over phone", "url": "tel:075111201840" },
+        { "label": "⬅️ Back to service help", "next": "service_help" }
+      ]
+    },
+
+    "minor_damage": {
+      "msg": "🔧 For 1-2 broken nails:\n\n• Nail Repair (£5/nail) - quick fix\n• Might need partial removal & rebuild\n• Usually takes 15-30 minutes\n\nWe can often fit this in same-day!",
+      "choices": [
+        { "label": "📅 Book repair appointment", "url": "#contact" },
+        {
+          "label": "🚨 Need emergency repair today",
+          "url": "tel:075111201840"
+        },
+        { "label": "⬅️ Back to damage assessment", "next": "damage_assessment" }
+      ]
+    },
+
+    "major_damage": {
+      "msg": "😰 For multiple damaged nails:\n\n• May need full removal (£10) + new set\n• Consider gel acrylic for strength (£45)\n• Allow 2+ hours for full restoration\n\nLet's discuss the best approach!",
+      "choices": [
+        { "label": "📞 Call to discuss options", "url": "tel:075111201840" },
+        { "label": "📅 Book consultation + treatment", "url": "#contact" },
+        { "label": "⬅️ Back to damage assessment", "next": "damage_assessment" }
+      ]
+    },
+
+    "health_concern": {
+      "msg": "🦠 For any signs of infection or irritation:\n\n• Please call immediately for advice\n• We prioritize nail health above all\n• May recommend seeing a healthcare provider first\n• We're here to help safely!",
+      "choices": [
+        {
+          "label": "📞 Call now for health concern",
+          "url": "tel:075111201840"
+        },
+        {
+          "label": "🏥 Find local healthcare provider",
+          "url": "https://www.nhs.uk/service-search/"
+        },
+        { "label": "⬅️ Back to damage assessment", "next": "damage_assessment" }
+      ]
+    },
+
+    "art_consultation": {
+      "msg": "🎨 Nail Art Consultation:\n\n• What style inspires you?\n• Minimalist, bold, seasonal?\n• Characters, patterns, abstract?\n• Special occasion theme?\n\nLet's create something amazing together!",
+      "choices": [
+        { "label": "🖼️ Browse our gallery first", "url": "#gallery" },
+        {
+          "label": "💬 Describe my vision via email",
+          "url": "mailto:beniahaker@interia.eu?subject=Custom%20Nail%20Art%20Design%20Ideas"
+        },
+        { "label": "📞 Discuss ideas over phone", "url": "tel:075111201840" },
+        { "label": "📅 Book art consultation", "url": "#contact" },
+        { "label": "⬅️ Back to service help", "next": "service_help" }
+      ]
+    },
+
+    "shape_consultation": {
+      "msg": "💅 Nail Shape & Length Options:\n\n• Square, round, coffin, almond\n• Short, medium, long lengths\n• Consider your lifestyle & preferences\n• We'll recommend what suits you best!",
+      "choices": [
+        { "label": "📏 I want longer nails", "next": "length_options" },
+        {
+          "label": "✂️ I want shorter/natural length",
+          "next": "natural_length"
+        },
+        {
+          "label": "🔄 I want to change current shape",
+          "next": "shape_change"
+        },
+        { "label": "💬 Get professional advice", "url": "tel:075111201840" },
+        { "label": "⬅️ Back to service help", "next": "service_help" }
+      ]
+    },
+
+    "length_options": {
+      "msg": "📏 For longer nails, I recommend:\n\n• Gel Acrylic Extensions (£45) - strongest\n• Acrylic Nails (£50) - classic choice\n• Both offer custom lengths & shapes\n• Perfect for nail art designs!",
+      "choices": [
+        { "label": "💎 Book Gel Acrylic Extensions", "url": "#contact" },
+        { "label": "💎 Book Acrylic Nails", "url": "#contact" },
+        { "label": "❓ What's the difference?", "next": "acrylic_comparison" },
+        {
+          "label": "⬅️ Back to shape consultation",
+          "next": "shape_consultation"
+        }
+      ]
+    },
+
+    "natural_length": {
+      "msg": "✂️ For natural length nails:\n\n• Gel Manicure (£30) - strengthens natural nails\n• French Manicure (£30) - classic elegance\n• Perfect for professional/everyday wear\n• Easy maintenance!",
+      "choices": [
+        { "label": "👑 Book Gel Manicure", "url": "#contact" },
+        { "label": "🤍 Book French Manicure", "url": "#contact" },
+        {
+          "label": "⬅️ Back to shape consultation",
+          "next": "shape_consultation"
+        }
+      ]
+    },
+
+    "acrylic_comparison": {
+      "msg": "💎 Gel Acrylic vs Traditional Acrylic:\n\n🌟 Gel Acrylic (£45):\n• More flexible & natural feeling\n• Easier removal\n• Less odor during application\n\n💪 Traditional Acrylic (£50):\n• Maximum strength\n• Longer lasting\n• Better for very active lifestyles",
+      "choices": [
+        { "label": "🌟 Choose Gel Acrylic", "url": "#contact" },
+        { "label": "💪 Choose Traditional Acrylic", "url": "#contact" },
+        { "label": "💬 Still not sure? Let's talk", "url": "tel:075111201840" },
+        { "label": "⬅️ Back to length options", "next": "length_options" }
+      ]
+    },
+
+    "post_removal_care": {
+      "msg": "💅 After Nail Removal:\n\n• Your natural nails may feel thin initially\n• Use cuticle oil daily\n• Keep hands moisturized\n• Consider a strengthening treatment\n• Wait 1-2 weeks before new extensions",
+      "choices": [
+        {
+          "label": "🛒 Ask about aftercare products",
+          "url": "mailto:beniahaker@interia.eu?subject=Post-Removal%20Nail%20Care%20Products"
+        },
+        { "label": "💪 Book strengthening treatment", "url": "#contact" },
+        { "label": "📅 Schedule new nails in 2 weeks", "url": "#contact" },
+        { "label": "⬅️ Back to removal info", "next": "removal_info" }
+      ]
+    },
+
+    "faq_menu": {
+      "msg": "❓ Frequently Asked Questions:",
+      "choices": [
+        {
+          "label": "💳 What payment methods do you accept?",
+          "next": "payment_methods"
+        },
+        {
+          "label": "❌ What's your cancellation policy?",
+          "next": "cancellation_policy"
+        },
+        { "label": "🚗 Tell me about parking", "next": "parking_detailed" },
+        { "label": "🎁 Do you offer gift vouchers?", "next": "gift_vouchers" },
+        {
+          "label": "💅 How long do treatments last?",
+          "next": "treatment_duration"
+        },
+        {
+          "label": "🔄 How often should I book maintenance?",
+          "next": "maintenance_frequency"
+        },
+        { "label": "⬅️ Back to main menu", "next": "welcome" }
+      ]
+    },
+
+    "payment_methods": {
+      "msg": "💳 Payment Methods:\n\nWe accept CASH ONLY at this time.\n\n💰 Please bring exact change or we can provide change for reasonable amounts.\n\n📝 Payment is due at the end of your appointment.",
+      "choices": [
+        { "label": "💰 What about deposits?", "next": "deposit_policy" },
+        { "label": "📅 Book appointment", "url": "#contact" },
+        { "label": "⬅️ Back to FAQ", "next": "faq_menu" }
+      ]
+    },
+
+    "deposit_policy": {
+      "msg": "💰 Deposit Policy:\n\n• New clients: No deposit required\n• Regular clients: No deposit required\n• We trust our valued customers!\n\n💡 Just let us know if you need to reschedule.",
+      "choices": [
+        { "label": "📅 Book appointment", "url": "#contact" },
+        { "label": "⬅️ Back to payment info", "next": "payment_methods" }
+      ]
+    },
+
+    "cancellation_policy": {
+      "msg": "❌ Cancellation Policy:\n\n✅ FREE cancellation up to 24 hours before your appointment\n\n⏰ Less than 24 hours notice:\n• We understand emergencies happen\n• Please call us to discuss\n• We're flexible with our regular clients\n\n📞 Call: 075111201840",
+      "choices": [
+        { "label": "📞 Call to cancel/reschedule", "url": "tel:075111201840" },
+        {
+          "label": "✉️ Email to reschedule",
+          "url": "mailto:beniahaker@interia.eu?subject=Appointment%20Reschedule%20Request"
+        },
+        { "label": "⬅️ Back to FAQ", "next": "faq_menu" }
+      ]
+    },
+
+    "parking_detailed": {
+      "msg": "🚗 Dedicated Parking Information:\n\n✅ FREE dedicated parking area right outside the studio\n✅ No time restrictions\n✅ Easy access - no walking required\n✅ Safe and secure area\n✅ Space for multiple cars\n\n📍 11 Bevington Close, Midsomer Norton, BA3 2FD",
+      "choices": [
+        {
+          "label": "🗺️ Get directions",
+          "url": "https://maps.apple.com/?q=11%20Bevington%20Close%20BA3%202FD"
+        },
+        {
+          "label": "📞 Call for specific directions",
+          "url": "tel:075111201840"
+        },
+        { "label": "⬅️ Back to FAQ", "next": "faq_menu" }
+      ]
+    },
+
+    "gift_vouchers": {
+      "msg": "🎁 Gift Vouchers:\n\nCurrently we don't offer formal gift vouchers, but we have better options:\n\n💝 Personal Gift Arrangements:\n• Call us to arrange a special gift appointment\n• We can coordinate with the gift recipient\n• Flexible scheduling and service selection\n• Personal touch that vouchers can't match!",
+      "choices": [
+        { "label": "📞 Arrange gift appointment", "url": "tel:075111201840" },
+        {
+          "label": "✉️ Discuss gift options",
+          "url": "mailto:beniahaker@interia.eu?subject=Gift%20Appointment%20Arrangement"
+        },
+        { "label": "⬅️ Back to FAQ", "next": "faq_menu" }
+      ]
+    },
+
+    "treatment_duration": {
+      "msg": "⏰ Treatment Duration Guide:\n\n💅 Gel Manicure: 70 minutes\n💎 Gel Acrylic Nails: 120 minutes (2 hours)\n🤍 French Manicure: 50 minutes\n🔄 Gel Infill (≤3 weeks): 60 minutes\n🔄 Gel Infill (>3 weeks): 90 minutes\n🎨 Cartoon Art: 20 minutes per nail\n🔧 Nail Repair: 15 minutes per nail\n🗑️ Removal Only: 30 minutes\n\n💡 Times may vary based on nail condition and design complexity.",
+      "choices": [
+        { "label": "📅 Book appointment", "url": "#contact" },
+        { "label": "💬 Ask about specific timing", "url": "tel:075111201840" },
+        { "label": "⬅️ Back to FAQ", "next": "faq_menu" }
+      ]
+    },
+
+    "maintenance_frequency": {
+      "msg": "🔄 Maintenance Schedule:\n\n💅 Gel Manicure:\n• Infill every 2-3 weeks\n• Full removal & new set every 6-8 weeks\n\n💎 Gel Acrylic:\n• Infill every 2-3 weeks (≤3 weeks = £30)\n• After 3 weeks = £35 (more work needed)\n• Full removal & new set every 8-10 weeks\n\n💡 Regular maintenance keeps your nails healthy and beautiful!",
+      "choices": [
+        { "label": "📅 Book maintenance now", "url": "#contact" },
+        { "label": "💡 Get nail care tips", "next": "nail_care_tips" },
+        { "label": "⬅️ Back to FAQ", "next": "faq_menu" }
+      ]
+    },
+
+    "real_booking_start": {
+      "msg": "Great! Let's book your appointment step by step. 🎯\n\nI'll help you find the perfect time slot and service.",
+      "choices": [
+        { "label": "🆕 I'm a new customer", "next": "new_customer_flow" },
+        {
+          "label": "🔄 I'm a returning customer",
+          "next": "returning_customer_flow"
+        },
+        { "label": "💡 Help me choose a service", "next": "service_help" },
+        { "label": "⬅️ Back to booking options", "next": "booking_flow" }
+      ]
+    },
+
+    "new_customer_flow": {
+      "msg": "Welcome to Brenda Nails! 💅✨\n\nLet's start by choosing your service, then we'll check availability and get your details.",
+      "choices": [
+        {
+          "label": "👑 Gel Manicure (£30)",
+          "action": "select_service",
+          "service": "gel_manicure"
+        },
+        {
+          "label": "💎 Gel Acrylic Nails (£45)",
+          "action": "select_service",
+          "service": "gel_acrylic"
+        },
+        {
+          "label": "🤍 French Manicure (£30)",
+          "action": "select_service",
+          "service": "french_manicure"
+        },
+        {
+          "label": "🔄 Gel Infill ≤3 weeks (£30)",
+          "action": "select_service",
+          "service": "gel_infill_early"
+        },
+        {
+          "label": "🔄 Gel Infill >3 weeks (£35)",
+          "action": "select_service",
+          "service": "gel_infill_late"
+        },
+        {
+          "label": "🎨 Cartoon Art per nail (£5)",
+          "action": "select_service",
+          "service": "cartoon_art"
+        },
+        { "label": "📋 See all services", "next": "services_menu" },
+        { "label": "⬅️ Back", "next": "real_booking_start" }
+      ]
+    },
+
+    "returning_customer_flow": {
+      "msg": "Welcome back! 💅\n\nPlease provide your email address so I can find your previous appointments and preferences.",
+      "choices": [
+        { "label": "📧 I'll enter my email", "action": "input_email" },
+        { "label": "📞 I'd rather call instead", "url": "tel:075111201840" },
+        { "label": "🆕 Book as new customer", "next": "new_customer_flow" },
+        { "label": "⬅️ Back", "next": "real_booking_start" }
+      ]
+    },
+
+    "availability_check": {
+      "msg": "Let me check our availability for you! 📅\n\nWhich date are you interested in?",
+      "choices": [
+        {
+          "label": "📅 This week",
+          "action": "check_availability",
+          "period": "this_week"
+        },
+        {
+          "label": "📅 Next week",
+          "action": "check_availability",
+          "period": "next_week"
+        },
+        { "label": "📅 Specific date", "action": "date_picker" },
+        { "label": "🕒 What are your hours?", "next": "hours_info" },
+        { "label": "⬅️ Back to booking", "next": "booking_flow" }
+      ]
+    }
+  }
+}

@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Navigation from '../components/Navigation.tsx'
+import Footer from '../components/Footer.tsx'
+---
+
+<Layout title="Terms of Service - Brenda Nails Studio">
+  <Navigation client:load />
+  <main class="pt-20">
+    <div class="container mx-auto px-4 py-16 max-w-4xl">
+      <div class="prose prose-lg mx-auto">
+        <h1 class="text-4xl font-serif font-bold text-gray-900 mb-8 text-center">Terms of Service</h1>
+        <p class="text-gray-600 text-center mb-12">Effective date: September 2025</p>
+        
+        <div class="bg-white rounded-3xl shadow-xl p-8 md:p-12">
+          <p class="text-lg text-gray-700 mb-8 leading-relaxed">
+            By using this website or booking an appointment, you agree to the following terms:
+          </p>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Services</h2>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+              <li>Brenda Nails Studio provides professional nail and beauty services at our salon in Midsomer Norton.</li>
+              <li>Services may be updated or changed without prior notice.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Bookings</h2>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+              <li>Appointments can be booked online via our website, by email, or by phone.</li>
+              <li>All bookings are subject to confirmation by the studio.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Cancellations</h2>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+              <li>If you need to cancel or reschedule, please notify us at least 24 hours in advance.</li>
+              <li>Late cancellations may result in a cancellation fee at the studio's discretion.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Payments</h2>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+              <li>Payments are made in person at the salon unless otherwise agreed.</li>
+              <li>Prices displayed on the website are indicative and may vary depending on the chosen treatment.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Liability</h2>
+            <ul class="list-disc pl-6 space-y-2 text-gray-700">
+              <li>Brenda Nails Studio is not responsible for any website errors, downtime, or third-party technical issues.</li>
+              <li>While we take the highest care, services are provided at your own discretion, and individual results may vary.</li>
+            </ul>
+          </section>
+
+          <section class="mb-8">
+            <h2 class="text-2xl font-serif font-bold text-gray-900 mb-4">Governing Law</h2>
+            <p class="text-gray-700 leading-relaxed">
+              These Terms are governed by the laws of England and Wales.
+            </p>
+          </section>
+
+          <div class="bg-rose-50 rounded-2xl p-6 mt-8">
+            <p class="text-gray-700 text-center">
+              If you have any questions about these Terms of Service, please contact us at 
+              <a href="mailto:beniahaker@interia.eu" class="text-rose-600 hover:text-rose-700 font-medium">beniahaker@interia.eu</a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<style>
+  .prose {
+    max-width: none;
+  }
+  .prose h1, .prose h2 {
+    color: inherit;
+  }
+  .prose ul {
+    margin: 0;
+  }
+</style>

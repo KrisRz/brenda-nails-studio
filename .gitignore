@@ -115,4 +115,10 @@ test-results/
 
 # Husky
 .husky/_
+
+# Access Keys
+Brenda_Nails_accessKeys.csv
 Brenda_Nails_accessKeys2.csv
+
+.cursor/rules/nx-rules.mdc
+.github/instructions/nx.instructions.md

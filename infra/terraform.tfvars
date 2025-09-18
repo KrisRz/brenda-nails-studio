@@ -1,0 +1,5 @@
+allowed_origin = "https://brenda-nails.com"
+from_email     = "no-reply@brenda-nails.com"
+to_email       = "beniahaker@interia.eu"
+primary_domain = "brenda-nails.com"
+brenda_phone   = "+447511201840"

@@ -1,6 +1,7 @@
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import { useEffect, useRef, useState } from 'react'
+import { soundSystem } from '../utils/soundSystem'
 import SectionDivider from './SectionDivider'
 
 gsap.registerPlugin(ScrollTrigger)
@@ -161,6 +162,8 @@ export default function Gallery() {
         galleryItems.forEach((item) => {
           // Mouse enter - 3D tilt effect
           item.addEventListener('mouseenter', () => {
+            soundSystem.play('card-hover')
+
             gsap.to(item, {
               rotationY: 12,
               rotationX: -8,
@@ -225,6 +228,7 @@ export default function Gallery() {
 
   // Modal animations
   const openModal = () => {
+    soundSystem.play('modal-open')
     setIsModalOpen(true)
     document.body.style.overflow = 'hidden'
 
@@ -297,6 +301,7 @@ export default function Gallery() {
   }
 
   const closeModal = () => {
+    soundSystem.play('modal-close')
     if (modalRef.current) {
       gsap.to(modalRef.current, {
         opacity: 0,
@@ -344,12 +349,12 @@ export default function Gallery() {
   }
 
   const nextImage = () => {
-    setCurrentImageIndex((prev) => (prev + 1) % galleryImages.length)
+    setCurrentImageIndex((prev) => (prev + 1) % allGalleryImages.length)
   }
 
   const prevImage = () => {
     setCurrentImageIndex(
-      (prev) => (prev - 1 + galleryImages.length) % galleryImages.length
+      (prev) => (prev - 1 + allGalleryImages.length) % allGalleryImages.length
     )
   }
 
@@ -368,70 +373,45 @@ export default function Gallery() {
     return () => document.removeEventListener('keydown', handleKeyPress)
   }, [isLightboxOpen, isModalOpen])
 
-  const galleryImages = [
-    {
-      id: 1,
-      category: 'Nail Art',
-      description: 'Floral design with gold accents',
-      image:
-        'https://images.unsplash.com/photo-1604654894610-df63bc536371?w=400&h=500&fit=crop&crop=center',
-    },
-    {
-      id: 2,
-      category: 'French Manicure',
-      description: 'Classic white tips with nude base',
-      image:
-        'https://images.unsplash.com/photo-1632345031435-8727f6897d53?w=400&h=500&fit=crop&crop=center',
-    },
-    {
-      id: 3,
-      category: 'Gel Extensions',
-      description: 'Long coffin shape with ombre effect',
-      image:
-        'https://images.unsplash.com/photo-1610992015732-2449b76344bc?w=400&h=500&fit=crop&crop=center',
-    },
-    {
-      id: 4,
-      category: 'Acrylic Nails',
-      description: 'Stiletto shape with rhinestone details',
-      image:
-        'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?w=400&h=500&fit=crop&crop=center',
-    },
-    {
-      id: 5,
-      category: 'Pedicure',
-      description: 'Summer bright colors with toe art',
-      image:
-        'https://images.unsplash.com/photo-1562887284-5c6c2c4e3c4c?w=400&h=500&fit=crop&crop=center',
-    },
-    {
-      id: 6,
-      category: 'Nail Art',
-      description: 'Geometric patterns in pastels',
-      image:
-        'https://images.unsplash.com/photo-1519014816548-bf5fe059798b?w=400&h=500&fit=crop&crop=center',
-    },
-    {
-      id: 7,
-      category: 'Chrome Nails',
-      description: 'Mirror finish chrome effect',
-      image:
-        'https://images.unsplash.com/photo-1598300042247-d088f8ab3a91?w=400&h=500&fit=crop&crop=center',
-    },
-    {
-      id: 8,
-      category: 'Marble Nails',
-      description: 'Elegant marble pattern design',
-      image:
-        'https://images.unsplash.com/photo-1515688594390-b649af70d282?w=400&h=500&fit=crop&crop=center',
-    },
-    {
-      id: 9,
-      category: 'Glitter Nails',
-      description: 'Sparkling glitter gradient',
-      image:
-        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=500&fit=crop&crop=center',
-    },
+  // Main gallery images (1-9) - displayed in "Our Work" section
+  const mainGalleryImages = [
+    { id: 1, image: '/images/gallery/1.jpg' },
+    { id: 2, image: '/images/gallery/2.jpg' },
+    { id: 3, image: '/images/gallery/3.jpg' },
+    { id: 4, image: '/images/gallery/4.jpg' },
+    { id: 5, image: '/images/gallery/5.jpg' },
+    { id: 6, image: '/images/gallery/6.jpg' },
+    { id: 7, image: '/images/gallery/7.jpg' },
+    { id: 8, image: '/images/gallery/8.jpg' },
+    { id: 9, image: '/images/gallery/9.jpg' },
+  ]
+
+  // All gallery images (1-32) - displayed in modal "View Full Gallery"
+  const allGalleryImages = [
+    ...mainGalleryImages,
+    { id: 10, image: '/images/gallery/10.jpg' },
+    { id: 11, image: '/images/gallery/11.jpg' },
+    { id: 12, image: '/images/gallery/12.jpg' },
+    { id: 13, image: '/images/gallery/13.jpg' },
+    { id: 14, image: '/images/gallery/14.jpg' },
+    { id: 15, image: '/images/gallery/15.jpg' },
+    { id: 16, image: '/images/gallery/16.jpg' },
+    { id: 17, image: '/images/gallery/17.jpg' },
+    { id: 18, image: '/images/gallery/18.jpg' },
+    { id: 19, image: '/images/gallery/19.jpg' },
+    { id: 20, image: '/images/gallery/20.jpg' },
+    { id: 21, image: '/images/gallery/21.jpg' },
+    { id: 22, image: '/images/gallery/22.jpg' },
+    { id: 23, image: '/images/gallery/23.jpg' },
+    { id: 24, image: '/images/gallery/24.jpg' },
+    { id: 25, image: '/images/gallery/25.jpg' },
+    { id: 26, image: '/images/gallery/26.jpg' },
+    { id: 27, image: '/images/gallery/27.jpg' },
+    { id: 28, image: '/images/gallery/28.jpg' },
+    { id: 29, image: '/images/gallery/29.jpg' },
+    { id: 30, image: '/images/gallery/30.jpg' },
+    { id: 31, image: '/images/gallery/31.jpg' },
+    { id: 32, image: '/images/gallery/32.jpg' },
   ]
 
   return (
@@ -467,41 +447,22 @@ export default function Gallery() {
           ref={gridRef}
           className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6"
         >
-          {galleryImages.map((image) => (
+          {mainGalleryImages.map((image) => (
             <div
               key={image.id}
               className="gallery-item group relative aspect-square rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 hover:scale-105 transform-3d interactive-card hover-glow"
               style={{ transformStyle: 'preserve-3d' }}
             >
-              {/* Actual image */}
+              {/* Gallery Image */}
               <img
                 src={image.image}
-                alt={`${image.category} - ${image.description}`}
-                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-                loading="lazy"
-                onError={(e) => {
-                  // Fallback if image fails to load
-                  e.currentTarget.src =
-                    'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjQwMCIgdmlld0JveD0iMCAwIDQwMCA0MDAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI0MDAiIGhlaWdodD0iNDAwIiBmaWxsPSIjZjNmNGY2Ii8+Cjx0ZXh0IHg9IjIwMCIgeT0iMTgwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSIjOWNhM2FmIiBmb250LWZhbWlseT0ic3lzdGVtLXVpIiBmb250LXNpemU9IjQ4Ij7wn5KFPC90ZXh0Pgo8dGV4dCB4PSIyMDAiIHk9IjIyMCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZmlsbD0iIzZiNzI4MCIgZm9udC1mYW1pbHk9InN5c3RlbS11aSIgZm9udC1zaXplPSIxNiI+TmFpbCBBcnQ8L3RleHQ+Cjwvc3ZnPgo='
+                alt={`Nail art work ${image.id}`}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 cursor-pointer"
+                onClick={() => {
+                  soundSystem.play('gallery-click')
+                  openModal()
                 }}
               />
-
-              {/* Overlay with description */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-end">
-                <div className="p-4 text-white transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                  <h3 className="font-semibold text-sm mb-1">
-                    {image.category}
-                  </h3>
-                  <p className="text-xs opacity-90">{image.description}</p>
-                </div>
-              </div>
-
-              {/* Category badge */}
-              <div className="absolute top-3 left-3 bg-white/90 backdrop-blur-sm rounded-full px-3 py-1 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <span className="text-xs font-medium text-gray-800">
-                  {image.category}
-                </span>
-              </div>
             </div>
           ))}
         </div>
@@ -553,7 +514,7 @@ export default function Gallery() {
 
             {/* Modal Grid */}
             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-              {galleryImages.map((image, index) => (
+              {allGalleryImages.map((image, index) => (
                 <div
                   key={image.id}
                   className="modal-gallery-item group relative aspect-square rounded-xl overflow-hidden cursor-pointer hover:shadow-xl transition-all duration-300 transform-3d"
@@ -566,20 +527,10 @@ export default function Gallery() {
                 >
                   <img
                     src={image.image}
-                    alt={`${image.category} - ${image.description}`}
+                    alt={`Nail art work ${image.id}`}
                     className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                     loading="lazy"
                   />
-
-                  {/* Hover overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-end">
-                    <div className="p-3 text-white">
-                      <h4 className="font-semibold text-sm">
-                        {image.category}
-                      </h4>
-                      <p className="text-xs opacity-90">{image.description}</p>
-                    </div>
-                  </div>
 
                   {/* Zoom icon */}
                   <div className="absolute top-2 right-2 w-8 h-8 bg-white/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
@@ -635,21 +586,15 @@ export default function Gallery() {
               style={{ opacity: 0, transform: 'scale(0.8)' }}
             >
               <img
-                src={galleryImages[currentImageIndex]?.image}
-                alt={`${galleryImages[currentImageIndex]?.category} - ${galleryImages[currentImageIndex]?.description}`}
+                src={allGalleryImages[currentImageIndex]?.image}
+                alt={`Nail art work ${allGalleryImages[currentImageIndex]?.id}`}
                 className="w-full h-auto max-h-[80vh] object-contain rounded-lg"
               />
 
               {/* Image Info */}
               <div className="text-center mt-4 text-white">
-                <h4 className="text-xl font-semibold mb-1">
-                  {galleryImages[currentImageIndex]?.category}
-                </h4>
-                <p className="text-white/80">
-                  {galleryImages[currentImageIndex]?.description}
-                </p>
                 <p className="text-sm text-white/60 mt-2">
-                  {currentImageIndex + 1} of {galleryImages.length}
+                  {currentImageIndex + 1} of {allGalleryImages.length}
                 </p>
               </div>
             </div>
