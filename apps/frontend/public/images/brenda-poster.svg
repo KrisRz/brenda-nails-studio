@@ -8,19 +8,19 @@
   </defs>
   
   <!-- Background -->
-  <rect width="400" height="500" fill="url(#bg)"/>
+  <rect width="400" height="500" fill="#000000"/>
   
   <!-- Play button circle -->
-  <circle cx="200" cy="250" r="40" fill="white" fill-opacity="0.9" stroke="#e11d48" stroke-width="2"/>
+  <circle cx="200" cy="250" r="40" fill="#1f1f1f" fill-opacity="0.9" stroke="#e11d48" stroke-width="2"/>
   
   <!-- Play icon -->
   <path d="M185 235 L215 250 L185 265 Z" fill="#e11d48"/>
   
   <!-- Text -->
-  <text x="200" y="320" text-anchor="middle" fill="#374151" font-family="Inter, system-ui" font-size="18" font-weight="600">
+  <text x="200" y="320" text-anchor="middle" fill="#ffffff" font-family="Inter, system-ui" font-size="18" font-weight="600">
     Meet Brenda
   </text>
-  <text x="200" y="345" text-anchor="middle" fill="#6b7280" font-family="Inter, system-ui" font-size="14">
+  <text x="200" y="345" text-anchor="middle" fill="#d1d5db" font-family="Inter, system-ui" font-size="14">
     Click to play video
   </text>
   
