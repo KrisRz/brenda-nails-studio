@@ -30,6 +30,21 @@ const { title, description = 'Brenda Nails Studio - Professional nail art and be
     <link rel="stylesheet" href="/chatbot/chatbot.css">
     <div id="bn-chatbot"></div>
     <script src="/chatbot/chatbot.js" defer></script>
+    
+    <!-- Black preloader fix -->
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        // Add loaded class after a short delay to ensure smooth transition
+        setTimeout(() => {
+          document.body.classList.add('loaded');
+        }, 100);
+      });
+      
+      // Fallback for window load event
+      window.addEventListener('load', function() {
+        document.body.classList.add('loaded');
+      });
+    </script>
   </body>
   <style is:global>
     @import '../styles/globals.css';

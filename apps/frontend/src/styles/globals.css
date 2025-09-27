@@ -55,6 +55,12 @@
   }
   body {
     @apply bg-background text-foreground;
+    background: #000000; /* Black preloader background */
+    transition: background 0.5s ease-in-out;
+  }
+  
+  /* Main content background - applied after load */
+  body.loaded {
     background: linear-gradient(to bottom, #fff0f5, #ffffff, #fdf2f8, #fef7ff, #ffffff);
   }
 }
