@@ -54,6 +54,11 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
 
+      - name: Ensure pnpm
+        run: |
+          npm i -g pnpm@9
+          pnpm -v
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v4
         with:
