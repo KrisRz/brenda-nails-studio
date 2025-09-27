@@ -2,7 +2,7 @@
 resource "null_resource" "frontend_build" {
   # Trigger rebuild when frontend files change
   triggers = {
-    frontend_hash = filemd5("${path.root}/../apps/frontend/dist/client/index.html")
+    frontend_hash = filemd5("${path.root}/../apps/frontend/dist/index.html")
   }
 
   provisioner "local-exec" {
@@ -10,13 +10,13 @@ resource "null_resource" "frontend_build" {
   }
 }
 
-# Upload all files from frontend/dist/client to S3
+# Upload all files from frontend/dist to S3 (static build)
 resource "aws_s3_object" "frontend_files" {
-  for_each = fileset("${path.root}/../apps/frontend/dist/client", "**/*")
+  for_each = fileset("${path.root}/../apps/frontend/dist", "**/*")
   
   bucket = aws_s3_bucket.site.id
   key    = each.value
-  source = "${path.root}/../apps/frontend/dist/client/${each.value}"
+  source = "${path.root}/../apps/frontend/dist/${each.value}"
   
   # Set content type based on file extension
   content_type = lookup({
@@ -51,7 +51,7 @@ resource "aws_s3_object" "frontend_files" {
     "webm" = "max-age=31536000"
   }, split(".", each.value)[length(split(".", each.value)) - 1], "max-age=86400")
   
-  etag = filemd5("${path.root}/../apps/frontend/dist/client/${each.value}")
+  etag = filemd5("${path.root}/../apps/frontend/dist/${each.value}")
   
   depends_on = [
     null_resource.frontend_build,
@@ -62,11 +62,11 @@ resource "aws_s3_object" "frontend_files" {
 # Invalidate CloudFront cache after upload
 resource "null_resource" "cloudfront_invalidation" {
   triggers = {
-    frontend_hash = filemd5("${path.root}/../apps/frontend/dist/client/index.html")
+    frontend_hash = filemd5("${path.root}/../apps/frontend/dist/index.html")
   }
 
   provisioner "local-exec" {
-    command = "aws cloudfront create-invalidation --distribution-id ${aws_cloudfront_distribution.site.id} --paths '/*' --profile brenda"
+    command = "aws cloudfront create-invalidation --distribution-id ${aws_cloudfront_distribution.site.id} --paths '/*'"
   }
 
   depends_on = [aws_s3_object.frontend_files]
