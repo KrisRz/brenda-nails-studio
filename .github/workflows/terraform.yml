@@ -77,15 +77,7 @@ jobs:
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
           working_directory: .
-          format: sarif
-          sarif_file: tfsec.sarif
         continue-on-error: true
-
-      - name: Upload SARIF file
-        uses: github/codeql-action/upload-sarif@v3
-        if: always()
-        with:
-          sarif_file: tfsec.sarif
 
       - name: Validation Summary
         if: github.event_name == 'pull_request'
@@ -224,6 +216,11 @@ jobs:
           aws-region: ${{ env.AWS_REGION }}
           role-session-name: terraform-apply-${{ github.run_id }}
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v3
         with:
@@ -241,15 +238,17 @@ jobs:
       - name: Deploy Frontend
         run: |
           # Build frontend
-          cd ../../apps/frontend
+          cd ../apps/frontend
           npm install
           npm run build
           
           # Get S3 bucket name and CloudFront distribution ID from outputs
-          BUCKET_NAME=$(terraform -chdir=../../envs/prod output -raw site_bucket_name)
-          DISTRIBUTION_ID=$(terraform -chdir=../../envs/prod output -raw cloudfront_distribution_id)
+          cd ../../envs/prod
+          BUCKET_NAME=$(terraform output -raw site_bucket_name)
+          DISTRIBUTION_ID=$(terraform output -raw cloudfront_distribution_id)
           
           # Sync to S3
+          cd ../../apps/frontend
           aws s3 sync dist/ s3://$BUCKET_NAME/ --delete \
             --cache-control "public,max-age=31536000" \
             --exclude "*.html" \
