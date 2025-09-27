@@ -267,7 +267,6 @@ jobs:
     name: Drift Detection
     if: github.event_name == 'schedule'
     runs-on: ubuntu-latest
-    environment: prod-readonly
     
     defaults:
       run:
