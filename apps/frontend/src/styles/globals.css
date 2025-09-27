@@ -253,33 +253,31 @@
   transform-origin: center center;
 }
 
-/* ===== LUXURY TYPOGRAPHY SYSTEM - AWARD-WINNING STANDARD ===== */
+/* ===== LUXURY TYPOGRAPHY SYSTEM - UNIFIED & CONSISTENT ===== */
 
-/* Industry Standard Typography Hierarchy */
-.font-serif {
-  font-family: 'Playfair Display', serif;
+/* Base Typography - All elements use consistent fonts */
+* {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
 }
 
-.font-sans {
-  font-family: 'Inter', sans-serif;
-}
-
-/* Award-winning Typography Classes */
-h1, h2, .luxury-heading {
-  font-family: 'Playfair Display', serif;
+/* Luxury Headings - Playfair Display for elegance */
+h1, h2, h3.luxury-heading, .luxury-heading {
+  font-family: 'Playfair Display', 'Georgia', 'Times New Roman', serif !important;
   font-weight: 700;
   line-height: 1.2;
   letter-spacing: -0.02em;
 }
 
+/* Sub-headings - Inter for readability */
 h3, h4, h5, h6 {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   font-weight: 600;
   line-height: 1.3;
 }
 
-p, span, div, button {
-  font-family: 'Inter', sans-serif;
+/* Body text - Inter for consistency */
+p, span, div, button, a, input, textarea, label {
+  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', 'Roboto', 'Helvetica Neue', sans-serif;
   line-height: 1.6;
 }
 

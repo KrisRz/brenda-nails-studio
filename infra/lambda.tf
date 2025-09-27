@@ -45,24 +45,6 @@ data "aws_iam_policy_document" "lambda_permissions" {
     actions   = ["logs:CreateLogGroup", "logs:CreateLogStream", "logs:PutLogEvents"]
     resources = ["*"]
   }
-  # PHASE 2 - DynamoDB permissions
-  statement {
-    effect = "Allow"
-    actions = [
-      "dynamodb:GetItem",
-      "dynamodb:PutItem",
-      "dynamodb:Query",
-      "dynamodb:UpdateItem",
-      "dynamodb:DeleteItem",
-      "dynamodb:Scan"
-    ]
-    resources = [
-      aws_dynamodb_table.data.arn,
-      "${aws_dynamodb_table.data.arn}/*",
-      "arn:aws:dynamodb:${var.region}:*:table/wby-webiny-*",
-      "arn:aws:dynamodb:${var.region}:*:table/wby-webiny-*/index/*"
-    ]
-  }
   # PHASE 2 - SNS permissions for SMS notifications
   statement {
     effect = "Allow"
@@ -107,9 +89,7 @@ resource "aws_lambda_function" "contact" {
       TO_EMAIL                            = var.to_email
       ALLOWED_ORIGIN                      = var.allowed_origin
       AWS_NODEJS_CONNECTION_REUSE_ENABLED = "1"
-      # PHASE 2 - DynamoDB table name
-      DYNAMODB_TABLE = aws_dynamodb_table.data.name
-      # PHASE 2 - SNS topic for notifications
+      # SNS topic for notifications
       SNS_TOPIC_ARN = aws_sns_topic.booking_notifications.arn
       BRENDA_PHONE  = var.brenda_phone
       # Webiny API URLs

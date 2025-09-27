@@ -22,22 +22,56 @@ export default function LuxuryContact() {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuccess, setShowSuccess] = useState(false)
   const [showEnhancedSuccess, setShowEnhancedSuccess] = useState(false)
+  const [dynamicServices, setDynamicServices] = useState<any[]>([])
   const stepRef = useRef<HTMLDivElement>(null)
 
   const totalSteps = 4
+
+  // Initialize with hardcoded services, then fetch from CMS API
+  useEffect(() => {
+    // Set initial hardcoded services
+    setDynamicServices(services)
+
+    const fetchServices = async () => {
+      try {
+        const response = await fetch(
+          'https://ivn5ztultd.execute-api.eu-west-2.amazonaws.com/cms-data?type=services'
+        )
+        if (response.ok) {
+          const cmsServices = await response.json()
+
+          // Transform API services to booking form format
+          const transformedServices = cmsServices.map((service: any) => ({
+            name: service.name,
+            price: `From £${service.price}`,
+            duration: `${service.duration} min`,
+            emoji: '💅', // Default emoji
+            description: service.description,
+          }))
+
+          setDynamicServices(transformedServices)
+        }
+      } catch (error) {
+        console.error('Failed to fetch services for booking form:', error)
+        // Keep default hardcoded services
+      }
+    }
+
+    fetchServices()
+  }, [])
 
   const steps = [
     {
       id: 1,
       title: 'Begin Your Luxury Journey',
       subtitle: 'Tell us about your vision for perfect nails',
-      icon: '✨',
+      icon: '',
     },
     {
       id: 2,
       title: 'Choose your service',
       subtitle: 'Select your perfect treatment',
-      icon: '👑',
+      icon: '',
     },
     {
       id: 3,
@@ -55,46 +89,63 @@ export default function LuxuryContact() {
 
   const services = [
     {
-      name: 'Classic Manicure',
-      price: '£25',
-      duration: '45 min',
-      emoji: '👑',
-      description: 'Professional nail care with cuticle treatment',
+      name: 'Gel Manicure',
+      price: 'From £30',
+      duration: '70 min',
+      emoji: '💅',
+      description:
+        'Professional gel manicure with long-lasting shine and durability',
     },
     {
-      name: 'Gel Extensions',
-      price: '£45',
-      duration: '90 min',
+      name: 'Gel Acrylic Nails',
+      price: 'From £45',
+      duration: '120 min',
       emoji: '✨',
-      description: 'Long-lasting extensions with custom shapes',
+      description:
+        'Extension on form with gel acrylic for strength and custom shapes',
     },
     {
-      name: 'Nail Art Design',
-      price: '£35',
+      name: 'Gel Manicure Infill (up to 3 weeks)',
+      price: 'From £30',
       duration: '60 min',
-      emoji: '🎨',
-      description: 'Custom artistic designs and patterns',
-    },
-    {
-      name: 'Pedicure Deluxe',
-      price: '£40',
-      duration: '75 min',
-      emoji: '🦶',
-      description: 'Complete foot care with exfoliation and polish',
+      emoji: '🔄',
+      description: 'Maintenance and refresh for your existing gel manicure',
     },
     {
       name: 'French Manicure',
-      price: '£30',
+      price: 'From £30',
       duration: '50 min',
       emoji: '🤍',
-      description: 'Timeless elegant French tips',
+      description: 'Timeless elegant French tips with perfect precision',
     },
     {
-      name: 'Acrylic Nails',
-      price: '£50',
-      duration: '120 min',
-      emoji: '💎',
-      description: 'Durable extensions with unlimited design',
+      name: 'Gel Manicure Infill (over 3 weeks)',
+      price: 'From £35',
+      duration: '90 min',
+      emoji: '🔧',
+      description: 'Extended maintenance for gel manicures requiring more work',
+    },
+    {
+      name: 'Cartoon Art (per nail)',
+      price: 'From £5',
+      duration: '20 min',
+      emoji: '🎨',
+      description:
+        'Custom cartoon designs and artistic elements on individual nails',
+    },
+    {
+      name: 'Removal only',
+      price: 'From £10',
+      duration: '30 min',
+      emoji: '🧽',
+      description: 'Professional nail polish or gel removal service',
+    },
+    {
+      name: 'Nail repair (per nail)',
+      price: 'From £5',
+      duration: '15 min',
+      emoji: '🔨',
+      description: 'Professional repair for damaged or broken nails',
     },
   ]
 
@@ -144,8 +195,32 @@ export default function LuxuryContact() {
         if (!formData.service) newErrors.service = 'Please select a service'
         break
       case 3:
-        if (!formData.date) newErrors.date = 'Please select a date'
-        if (!formData.time) newErrors.time = 'Please select a time'
+        if (!formData.date) {
+          newErrors.date = 'Please select a date'
+        } else {
+          // Validate date is not in the past
+          const selectedDate = new Date(formData.date)
+          const today = new Date()
+          today.setHours(0, 0, 0, 0)
+          if (selectedDate < today) {
+            newErrors.date = 'Please select a future date'
+          }
+          // Validate date is not more than 3 months in advance
+          const threeMonthsFromNow = new Date()
+          threeMonthsFromNow.setMonth(threeMonthsFromNow.getMonth() + 3)
+          if (selectedDate > threeMonthsFromNow) {
+            newErrors.date = 'Bookings available up to 3 months in advance'
+          }
+        }
+        if (!formData.time) {
+          newErrors.time = 'Please select a time'
+        } else {
+          // Basic business hours validation (9 AM to 6 PM)
+          const [hours] = formData.time.split(':').map(Number)
+          if (hours < 9 || hours >= 18) {
+            newErrors.time = 'Please select a time between 9:00 AM and 6:00 PM'
+          }
+        }
         break
       case 4:
         if (!formData.phone.trim()) newErrors.phone = 'Phone is required'
@@ -167,23 +242,58 @@ export default function LuxuryContact() {
     if (!validateCurrentStep()) return
 
     setIsSubmitting(true)
-    await new Promise((resolve) => setTimeout(resolve, 2000))
-    setIsSubmitting(false)
-    soundSystem.play('form-success')
-    setShowEnhancedSuccess(true)
 
-    // Reset form
-    setFormData({
-      firstName: '',
-      lastName: '',
-      email: '',
-      phone: '',
-      service: '',
-      date: '',
-      time: '',
-      message: '',
-    })
-    setFormStep(1)
+    try {
+      // API call to contact endpoint for SMS notifications
+      const response = await fetch(
+        'https://ivn5ztultd.execute-api.eu-west-2.amazonaws.com/contact',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            name: `${formData.firstName} ${formData.lastName}`,
+            email: formData.email,
+            subject: `Contact Request: ${formData.service}`,
+            message: `Phone: ${formData.phone}
+Service: ${formData.service}
+Date: ${formData.date}
+Time: ${formData.time}
+
+${formData.message || `Contact request for ${formData.service}`}`,
+          }),
+        }
+      )
+
+      if (!response.ok) {
+        throw new Error('Failed to submit contact form')
+      }
+
+      const result = await response.json()
+
+      setIsSubmitting(false)
+      soundSystem.play('form-success')
+      setShowEnhancedSuccess(true)
+
+      // Reset form
+      setFormData({
+        firstName: '',
+        lastName: '',
+        email: '',
+        phone: '',
+        service: '',
+        date: '',
+        time: '',
+        message: '',
+      })
+      setFormStep(1)
+    } catch (error) {
+      console.error('Contact form submission error:', error)
+      setIsSubmitting(false)
+      // Show error message to user
+      setErrors({ submit: 'Failed to submit contact form. Please try again.' })
+    }
   }
 
   return (
@@ -204,10 +314,10 @@ export default function LuxuryContact() {
       <div className="container mx-auto px-4 relative z-10">
         {/* Luxury Header */}
         <div className="text-center mb-16">
-          <h2 className="text-luxury-hero font-serif text-gray-900 mb-6 luxury-heading tracking-tight-luxury">
+          <h2 className="text-luxury-hero text-gray-900 mb-6 luxury-heading tracking-tight-luxury">
             Book Your Dream Nails
           </h2>
-          <p className="text-luxury-subtitle font-sans text-gray-600 max-w-4xl mx-auto leading-relaxed">
+          <p className="text-luxury-subtitle text-gray-600 max-w-4xl mx-auto leading-relaxed">
             Experience our luxury step-by-step booking journey. We'll guide you
             through creating your perfect nail appointment.
           </p>
@@ -251,10 +361,10 @@ export default function LuxuryContact() {
             {/* Step Header */}
             <div className="text-center mb-8">
               <div className="text-6xl mb-4">{steps[formStep - 1].icon}</div>
-              <h3 className="text-3xl font-serif font-bold text-gray-900 mb-2 luxury-heading">
+              <h3 className="text-3xl font-bold text-gray-900 mb-2 luxury-heading">
                 {steps[formStep - 1].title}
               </h3>
-              <p className="text-gray-600 font-sans text-lg">
+              <p className="text-gray-600 text-lg">
                 {steps[formStep - 1].subtitle}
               </p>
             </div>
@@ -299,7 +409,7 @@ export default function LuxuryContact() {
                 {formStep === 2 && (
                   <div className="space-y-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                      {services.map((service, index) => (
+                      {dynamicServices.map((service, index) => (
                         <div
                           key={index}
                           onClick={() => updateField('service', service.name)}
@@ -310,7 +420,7 @@ export default function LuxuryContact() {
                           }`}
                         >
                           <div className="text-4xl mb-3">{service.emoji}</div>
-                          <h4 className="font-serif font-bold text-gray-900 mb-2">
+                          <h4 className="font-bold text-gray-900 mb-2 luxury-heading">
                             {service.name}
                           </h4>
                           <p className="text-sm text-gray-600 mb-3">
@@ -343,6 +453,12 @@ export default function LuxuryContact() {
                         label="Preferred Date"
                         type="date"
                         value={formData.date}
+                        min={new Date().toISOString().split('T')[0]}
+                        max={
+                          new Date(Date.now() + 90 * 24 * 60 * 60 * 1000)
+                            .toISOString()
+                            .split('T')[0]
+                        }
                         onChange={(value) => updateField('date', value)}
                         required
                         error={errors.date}
@@ -352,6 +468,8 @@ export default function LuxuryContact() {
                         label="Preferred Time"
                         type="time"
                         value={formData.time}
+                        min="09:00"
+                        max="18:00"
                         onChange={(value) => updateField('time', value)}
                         required
                         error={errors.time}
@@ -365,22 +483,27 @@ export default function LuxuryContact() {
                         Or choose from popular time slots:
                       </p>
                       <div className="grid grid-cols-3 md:grid-cols-5 gap-3">
-                        {['10:00', '11:30', '13:00', '14:30', '16:00'].map(
-                          (time) => (
-                            <button
-                              key={time}
-                              type="button"
-                              onClick={() => updateField('time', time)}
-                              className={`py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 hover-lift ${
-                                formData.time === time
-                                  ? 'bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-lg transform scale-105'
-                                  : 'bg-white/80 text-gray-700 hover:bg-rose-50 hover:text-rose-600 hover:shadow-md'
-                              }`}
-                            >
-                              {time}
-                            </button>
-                          )
-                        )}
+                        {[
+                          '09:00',
+                          '10:30',
+                          '12:00',
+                          '13:30',
+                          '15:00',
+                          '16:30',
+                        ].map((time) => (
+                          <button
+                            key={time}
+                            type="button"
+                            onClick={() => updateField('time', time)}
+                            className={`py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 hover-lift ${
+                              formData.time === time
+                                ? 'bg-gradient-to-r from-rose-500 to-pink-600 text-white shadow-lg transform scale-105'
+                                : 'bg-white/80 text-gray-700 hover:bg-rose-50 hover:text-rose-600 hover:shadow-md'
+                            }`}
+                          >
+                            {time}
+                          </button>
+                        ))}
                       </div>
                     </div>
                   </div>
@@ -401,7 +524,7 @@ export default function LuxuryContact() {
 
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-3">
-                        Special requests or design ideas? ✨
+                        Special requests or design ideas?
                       </label>
                       <textarea
                         value={formData.message}
@@ -414,8 +537,8 @@ export default function LuxuryContact() {
 
                     {/* Booking Summary */}
                     <div className="bg-gradient-to-r from-rose-50 to-pink-50 rounded-2xl p-6 border border-rose-200">
-                      <h4 className="font-serif font-bold text-gray-900 mb-4 text-center">
-                        ✨ Booking Summary
+                      <h4 className="font-bold text-gray-900 mb-4 text-center luxury-heading">
+                        Booking Summary
                       </h4>
                       <div className="space-y-3 text-sm">
                         <div className="flex justify-between items-center">
@@ -447,46 +570,50 @@ export default function LuxuryContact() {
               </div>
 
               {/* Step Navigation */}
-              <div className="flex justify-between items-center pt-8 mt-8 border-t border-gray-200">
-                <button
-                  type="button"
-                  onClick={prevStep}
-                  disabled={formStep === 1}
-                  className={`px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
-                    formStep === 1
-                      ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
-                      : 'bg-white text-gray-700 hover:bg-gray-50 hover:scale-105 shadow-md hover-lift'
-                  }`}
-                >
-                  ← Previous
-                </button>
-
-                <div className="text-center">
-                  <span className="text-sm text-gray-500 font-sans">
+              <div className="pt-8 mt-8 border-t border-gray-200">
+                {/* Step indicator - always visible on mobile */}
+                <div className="text-center mb-6">
+                  <span className="text-sm text-gray-500">
                     Step {formStep} of {totalSteps}
                   </span>
                 </div>
 
-                {formStep < totalSteps ? (
-                  <RippleButton
-                    variant="primary"
-                    size="lg"
-                    className="shadow-lg hover-glow"
+                {/* Buttons layout - responsive */}
+                <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4">
+                  <button
+                    type="button"
+                    onClick={prevStep}
+                    disabled={formStep === 1}
+                    className={`order-2 sm:order-1 px-6 py-3 rounded-xl font-medium transition-all duration-300 ${
+                      formStep === 1
+                        ? 'bg-gray-100 text-gray-400 cursor-not-allowed'
+                        : 'bg-white text-gray-700 hover:bg-gray-50 hover:scale-105 shadow-md hover-lift'
+                    }`}
                   >
-                    Next Step →
-                  </RippleButton>
-                ) : (
-                  <RippleButton
-                    loading={isSubmitting}
-                    variant="primary"
-                    size="lg"
-                    className="shadow-xl animate-pulse-glow"
-                  >
-                    <span className="text-xl">✨</span>
-                    {isSubmitting ? 'Booking...' : 'Complete Booking'}
-                    <span className="text-xl">👑</span>
-                  </RippleButton>
-                )}
+                    ← Previous
+                  </button>
+
+                  <div className="order-1 sm:order-2">
+                    {formStep < totalSteps ? (
+                      <RippleButton
+                        variant="primary"
+                        size="lg"
+                        className="shadow-lg hover-glow w-full sm:w-auto"
+                      >
+                        Next Step →
+                      </RippleButton>
+                    ) : (
+                      <RippleButton
+                        loading={isSubmitting}
+                        variant="primary"
+                        size="lg"
+                        className="shadow-xl animate-pulse-glow w-full sm:w-auto"
+                      >
+                        {isSubmitting ? 'Booking...' : 'Complete Booking'}
+                      </RippleButton>
+                    )}
+                  </div>
+                </div>
               </div>
             </form>
           </div>
@@ -496,7 +623,11 @@ export default function LuxuryContact() {
       {/* Enhanced Success State */}
       <EnhancedSuccessState
         isVisible={showEnhancedSuccess}
-        onComplete={() => setShowEnhancedSuccess(false)}
+        onComplete={() => {
+          setShowEnhancedSuccess(false)
+          // Redirect to home page after successful booking
+          window.location.href = '/'
+        }}
         type="booking"
       />
 

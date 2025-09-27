@@ -85,7 +85,7 @@ export default function SuccessToast({
         <div className="flex items-center space-x-3">
           <div className="text-2xl">{getIcon()}</div>
           <div className="flex-1">
-            <p className="font-sans font-medium">{message}</p>
+            <p className=" font-medium">{message}</p>
           </div>
           <button
             onClick={() => {

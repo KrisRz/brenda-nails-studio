@@ -88,10 +88,10 @@ export default function Testimonials() {
       <div className="container mx-auto px-4">
         {/* Header */}
         <div className="text-center mb-16">
-          <h2 className="text-luxury-title font-serif text-gray-900 mb-6 luxury-heading tracking-tight-luxury">
+          <h2 className="text-luxury-title text-gray-900 mb-6 luxury-heading tracking-tight-luxury">
             Client Love
           </h2>
-          <p className="text-luxury-subtitle font-sans text-gray-600 max-w-2xl mx-auto">
+          <p className="text-luxury-subtitle text-gray-600 max-w-2xl mx-auto">
             Real stories from our amazing clients who trust us with their nail
             artistry
           </p>
@@ -110,8 +110,10 @@ export default function Testimonials() {
             <div className="relative z-10">
               {/* Quote */}
               <div className="text-center mb-8">
-                <div className="text-6xl text-rose-300 mb-4 font-serif">"</div>
-                <blockquote className="text-luxury-subtitle font-sans text-gray-700 leading-relaxed italic max-w-3xl mx-auto">
+                <div className="text-6xl text-rose-300 mb-4 luxury-heading">
+                  "
+                </div>
+                <blockquote className="text-luxury-subtitle text-gray-700 leading-relaxed italic max-w-3xl mx-auto">
                   {currentTestimonial.quote}
                 </blockquote>
               </div>
@@ -124,13 +126,13 @@ export default function Testimonials() {
                   className="w-20 h-20 rounded-full object-cover border-4 border-white shadow-xl"
                 />
                 <div className="text-center md:text-left">
-                  <h4 className="font-serif font-bold text-gray-900 text-xl luxury-heading mb-1">
+                  <h4 className="font-bold text-gray-900 text-xl luxury-heading mb-1">
                     {currentTestimonial.name}
                   </h4>
-                  <p className="text-gray-600 font-sans text-lg mb-1">
+                  <p className="text-gray-600 text-lg mb-1">
                     {currentTestimonial.role}
                   </p>
-                  <p className="text-rose-600 font-sans text-sm font-medium mb-2">
+                  <p className="text-rose-600 text-sm font-medium mb-2">
                     {currentTestimonial.service}
                   </p>
                   {/* Stars */}
@@ -149,7 +151,7 @@ export default function Testimonials() {
           {/* Navigation & Counter */}
           <div className="flex flex-col items-center space-y-4 mt-8">
             {/* Counter */}
-            <div className="text-sm text-gray-500 font-sans">
+            <div className="text-sm text-gray-500">
               {currentIndex + 1} of {testimonials.length}
             </div>
 

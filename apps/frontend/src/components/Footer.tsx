@@ -21,19 +21,18 @@ export default function Footer() {
         {/* Award-winning Asymmetric Layout */}
         <div className="grid grid-cols-1 lg:grid-cols-10 gap-12">
           {/* Enhanced Brand Section - 50% Width */}
-          <div className="lg:col-span-5 space-y-8">
+          <div className="lg:col-span-5 space-y-8 text-center lg:text-left">
             {/* Brand Header */}
             <div>
-              <div className="flex items-center mb-4">
-                <span className="text-4xl mr-3">👑</span>
-                <span className="text-3xl font-serif font-bold text-gray-900 luxury-heading">
+              <div className="flex items-center mb-4 justify-center lg:justify-start">
+                <span className="text-3xl  font-bold text-gray-900 luxury-heading">
                   Brenda Nails Studio
                 </span>
               </div>
-              <p className="text-lg font-serif italic text-gray-700 mb-6 max-w-md leading-relaxed">
+              <p className="text-lg  italic text-gray-700 mb-6 max-w-md leading-relaxed">
                 "Where artistry meets excellence"
               </p>
-              <p className="text-gray-600 font-sans leading-relaxed max-w-lg">
+              <p className="text-gray-600  leading-relaxed max-w-lg">
                 Professional nail artistry in Midsomer Norton. Licensed,
                 certified, and award-winning studio offering luxury nail care
                 with uncompromising attention to detail.
@@ -74,7 +73,7 @@ export default function Footer() {
 
             {/* Operating Hours */}
             <div className="bg-white/30 backdrop-blur-sm rounded-2xl p-6 border border-white/50">
-              <h4 className="font-serif font-bold text-gray-900 mb-4 flex items-center">
+              <h4 className=" font-bold text-gray-900 mb-4 flex items-center">
                 <span className="mr-2">🕒</span>
                 Studio Hours
               </h4>
@@ -102,17 +101,17 @@ export default function Footer() {
           </div>
 
           {/* Services & Navigation - 25% Width */}
-          <div className="lg:col-span-2 space-y-8">
+          <div className="lg:col-span-2 space-y-8 text-center lg:text-left">
             {/* Services */}
             <div>
-              <h3 className="text-xl font-serif font-bold mb-6 text-gray-900 luxury-heading">
+              <h3 className="text-xl  font-bold mb-6 text-gray-900 luxury-heading">
                 Our Services
               </h3>
               <ul className="space-y-3">
                 <li>
                   <a
                     href="#services"
-                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans"
+                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide "
                   >
                     Gel Manicure
                   </a>
@@ -120,7 +119,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#services"
-                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans"
+                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide "
                   >
                     Gel Acrylic Nails
                   </a>
@@ -128,7 +127,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#services"
-                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans"
+                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide "
                   >
                     French Manicure
                   </a>
@@ -136,7 +135,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#services"
-                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans"
+                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide "
                   >
                     Cartoon Art
                   </a>
@@ -144,7 +143,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#contact"
-                    className="text-rose-600 hover:text-rose-700 font-medium transition-all duration-300 hover-text-slide font-sans"
+                    className="text-rose-600 hover:text-rose-700 font-medium transition-all duration-300 hover-text-slide "
                   >
                     Book Appointment →
                   </a>
@@ -154,14 +153,14 @@ export default function Footer() {
 
             {/* Quick Links */}
             <div>
-              <h4 className="text-lg font-serif font-bold mb-4 text-gray-900">
+              <h4 className="text-lg  font-bold mb-4 text-gray-900">
                 Quick Links
               </h4>
               <ul className="space-y-2">
                 <li>
                   <a
                     href="#about"
-                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans text-sm"
+                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide  text-sm"
                   >
                     About Brenda
                   </a>
@@ -169,7 +168,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="#gallery"
-                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans text-sm"
+                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide  text-sm"
                   >
                     Portfolio Gallery
                   </a>
@@ -177,7 +176,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="/privacy-policy"
-                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans text-sm"
+                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide  text-sm"
                   >
                     Privacy Policy
                   </a>
@@ -185,7 +184,7 @@ export default function Footer() {
                 <li>
                   <a
                     href="/terms-of-service"
-                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide font-sans text-sm"
+                    className="text-gray-600 hover:text-rose-600 transition-all duration-300 hover-text-slide  text-sm"
                   >
                     Terms of Service
                   </a>
@@ -195,20 +194,20 @@ export default function Footer() {
           </div>
 
           {/* Contact & Social - 30% Width */}
-          <div className="lg:col-span-3 space-y-8">
+          <div className="lg:col-span-3 space-y-8 text-center lg:text-left">
             {/* Contact Info */}
             <div>
-              <h3 className="text-xl font-serif font-bold mb-6 text-gray-900 luxury-heading">
+              <h3 className="text-xl  font-bold mb-6 text-gray-900 luxury-heading">
                 Get In Touch
               </h3>
               <div className="space-y-4">
-                <div className="flex items-start hover:scale-105 transition-all duration-300 interactive-card">
+                <div className="flex items-start hover:scale-105 transition-all duration-300 interactive-card justify-center lg:justify-start">
                   <span className="mr-3 mt-1 text-pink-500 text-xl">📍</span>
                   <div>
-                    <div className="font-medium text-gray-900 font-sans">
+                    <div className="font-medium text-gray-900 ">
                       Studio Location
                     </div>
-                    <div className="text-sm text-gray-600 font-sans">
+                    <div className="text-sm text-gray-600 ">
                       11 bevington close
                       <br />
                       Midsomer Norton
@@ -226,30 +225,26 @@ export default function Footer() {
                   </div>
                 </div>
 
-                <div className="flex items-center hover:scale-105 transition-all duration-300 interactive-card">
+                <div className="flex items-center hover:scale-105 transition-all duration-300 interactive-card justify-center lg:justify-start">
                   <span className="mr-3 text-pink-500 text-xl">📞</span>
                   <div>
-                    <div className="font-medium text-gray-900 font-sans">
-                      Call Us
-                    </div>
+                    <div className="font-medium text-gray-900 ">Call Us</div>
                     <a
-                      href="tel:075111201840"
-                      className="text-sm text-gray-600 hover:text-rose-600 transition-colors font-sans"
+                      href="tel:07511201840"
+                      className="text-sm text-gray-600 hover:text-rose-600 transition-colors "
                     >
-                      075111201840
+                      07511201840
                     </a>
                   </div>
                 </div>
 
-                <div className="flex items-center hover:scale-105 transition-all duration-300 interactive-card">
+                <div className="flex items-center hover:scale-105 transition-all duration-300 interactive-card justify-center lg:justify-start">
                   <span className="mr-3 text-pink-500 text-xl">✉️</span>
                   <div>
-                    <div className="font-medium text-gray-900 font-sans">
-                      Email Us
-                    </div>
+                    <div className="font-medium text-gray-900 ">Email Us</div>
                     <a
                       href="mailto:beniahaker@interia.eu"
-                      className="text-sm text-gray-600 hover:text-rose-600 transition-colors font-sans"
+                      className="text-sm text-gray-600 hover:text-rose-600 transition-colors "
                     >
                       beniahaker@interia.eu
                     </a>
@@ -260,10 +255,10 @@ export default function Footer() {
 
             {/* Social Media */}
             <div>
-              <h4 className="text-lg font-serif font-bold mb-4 text-gray-900">
+              <h4 className="text-lg  font-bold mb-4 text-gray-900">
                 Follow Our Work
               </h4>
-              <div className="flex gap-3">
+              <div className="flex gap-3 justify-center lg:justify-start">
                 <a
                   href="https://www.instagram.com/brenda_nails_uk/"
                   target="_blank"
@@ -283,7 +278,7 @@ export default function Footer() {
                   <FaFacebookF className="w-5 h-5" />
                 </a>
               </div>
-              <p className="text-xs text-gray-500 mt-3 font-sans">
+              <p className="text-xs text-gray-500 mt-3 ">
                 @brenda_nails_uk • Daily nail art inspiration & tutorials
               </p>
             </div>
@@ -294,10 +289,10 @@ export default function Footer() {
         <div className="border-t border-white/30 mt-16 pt-8">
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="text-center md:text-left mb-4 md:mb-0">
-              <p className="text-gray-600 text-sm font-sans">
+              <p className="text-gray-600 text-sm ">
                 © 2025 Brenda Nails Studio. All rights reserved.
               </p>
-              <p className="text-gray-500 text-xs mt-2 font-sans">
+              <p className="text-gray-500 text-xs mt-2 ">
                 Licensed Professional Nail Technician • Fully Insured Studio
               </p>
             </div>
@@ -305,20 +300,20 @@ export default function Footer() {
               <div className="flex space-x-4 text-xs">
                 <a
                   href="/privacy-policy"
-                  className="text-gray-500 hover:text-rose-600 transition-colors hover-text-slide font-sans"
+                  className="text-gray-500 hover:text-rose-600 transition-colors hover-text-slide "
                 >
                   Privacy Policy
                 </a>
                 <a
                   href="/terms-of-service"
-                  className="text-gray-500 hover:text-rose-600 transition-colors hover-text-slide font-sans"
+                  className="text-gray-500 hover:text-rose-600 transition-colors hover-text-slide "
                 >
                   Terms of Service
                 </a>
               </div>
               <div className="text-center">
-                <p className="text-rose-600 text-xs font-medium font-sans">
-                  Book your dream nails today ✨
+                <p className="text-rose-600 text-xs font-medium ">
+                  Book your dream nails today
                 </p>
               </div>
             </div>

@@ -1,13 +1,28 @@
 class SoundSystem {
-  private sounds: Map<string, HTMLAudioElement> = new Map()
-  private enabled = true
+  private sounds: Map<
+    string,
+    | HTMLAudioElement
+    | { volume: number; currentTime: number; play: () => Promise<void> }
+  > = new Map()
+  private enabled = false // Default to disabled for better UX
   private volume = 0.3 // Subtle volume for luxury feel
   private initialized = false
+  private audioContext: AudioContext | null = null
+  private userInteracted = false
 
   constructor() {
     // Only initialize in browser environment
     if (typeof window !== 'undefined') {
       this.initialize()
+      // Load saved preference from localStorage
+      try {
+        const savedPreference = localStorage.getItem('brendaNails_soundEnabled')
+        if (savedPreference !== null) {
+          this.enabled = savedPreference === 'true'
+        }
+      } catch (error) {
+        // localStorage not available, use default
+      }
     }
   }
 
@@ -15,21 +30,18 @@ class SoundSystem {
     if (this.initialized) return
     this.initialized = true
 
-    // Load sound files
-    this.loadSound('card-hover', '/sounds/card-hover.mp3')
-    this.loadSound('button-click', '/sounds/button-click.mp3')
-    this.loadSound('modal-open', '/sounds/modal-open.mp3')
-    this.loadSound('modal-close', '/sounds/modal-close.mp3')
-    this.loadSound('gallery-click', '/sounds/gallery-click.mp3')
-    this.loadSound('form-step', '/sounds/form-step.mp3')
-    this.loadSound('form-success', '/sounds/form-success.mp3')
-    this.loadSound('nav-hover', '/sounds/nav-hover.mp3')
-
     // Check user preference
-    const savedPreference = localStorage.getItem('brendaNails_soundEnabled')
-    if (savedPreference !== null) {
-      this.enabled = savedPreference === 'true'
+    try {
+      const savedPreference = localStorage.getItem('brendaNails_soundEnabled')
+      if (savedPreference !== null) {
+        this.enabled = savedPreference === 'true'
+      }
+    } catch (error) {
+      // localStorage not available, keep default
     }
+
+    // Don't create sounds until user interaction
+    // They will be created on-demand in play() method
   }
 
   private loadSound(name: string, url: string) {
@@ -68,7 +80,7 @@ class SoundSystem {
     const fakeAudio = {
       volume: this.volume,
       currentTime: 0,
-      play: () => {
+      play: async () => {
         return new Promise<void>((resolve) => {
           this.generateWebAudioSound(
             soundConfig.frequency,
@@ -78,7 +90,7 @@ class SoundSystem {
           resolve()
         })
       },
-    } as HTMLAudioElement
+    }
 
     this.sounds.set(name, fakeAudio)
   }
@@ -135,17 +147,41 @@ class SoundSystem {
     )
   }
 
-  private generateWebAudioSound(
+  private async initAudioContext() {
+    if (this.audioContext) return this.audioContext
+
+    if (typeof window === 'undefined') return null
+
+    try {
+      this.audioContext = new (
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext })
+          .webkitAudioContext
+      )()
+
+      // Resume context if suspended (required for user interaction)
+      if (this.audioContext.state === 'suspended') {
+        await this.audioContext.resume()
+      }
+
+      return this.audioContext
+    } catch (error) {
+      console.warn('Web Audio API not supported:', error)
+      return null
+    }
+  }
+
+  private async generateWebAudioSound(
     frequency: number,
     duration: number,
     type: OscillatorType
   ) {
-    if (typeof window === 'undefined') return
+    if (typeof window === 'undefined' || !this.userInteracted) return
 
     try {
-      const audioContext = new (
-        window.AudioContext || (window as any).webkitAudioContext
-      )()
+      const audioContext = await this.initAudioContext()
+      if (!audioContext) return
+
       const oscillator = audioContext.createOscillator()
       const gainNode = audioContext.createGain()
 
@@ -164,7 +200,7 @@ class SoundSystem {
       oscillator.start(now)
       oscillator.stop(now + duration)
     } catch (error) {
-      console.warn('Web Audio API not supported or failed:', error)
+      // Silently fail - audio is not critical
     }
   }
 
@@ -172,38 +208,50 @@ class SoundSystem {
     // Ensure initialization in browser
     if (typeof window !== 'undefined') {
       this.initialize()
+      this.userInteracted = true // Mark user interaction
     }
 
-    if (!this.enabled) return
+    if (!this.enabled || !this.userInteracted) return
 
-    const sound = this.sounds.get(soundName)
+    // Create sound on-demand if it doesn't exist
+    let sound = this.sounds.get(soundName)
     if (!sound) {
-      console.warn(`Sound not found: ${soundName}`)
-      return
+      this.createGeneratedSound(soundName)
+      sound = this.sounds.get(soundName)
+      if (!sound) {
+        return // Still couldn't create sound
+      }
     }
 
     try {
-      // Reset to beginning and set volume
-      sound.currentTime = 0
-      sound.volume = customVolume ?? this.volume
+      // Reset to beginning and set volume if supported
+      if (sound.currentTime !== undefined) {
+        sound.currentTime = 0
+      }
+      if (sound.volume !== undefined) {
+        sound.volume = customVolume ?? this.volume
+      }
 
       // Play with promise handling for better browser compatibility
       const playPromise = sound.play()
-      if (playPromise !== undefined) {
-        playPromise.catch((error) => {
-          // Auto-play was prevented, which is normal
-          console.debug(`Audio play prevented for ${soundName}:`, error)
+      if (playPromise && typeof playPromise.catch === 'function') {
+        playPromise.catch(() => {
+          // Silently handle play failures
         })
       }
     } catch (error) {
-      console.warn(`Error playing sound ${soundName}:`, error)
+      // Silently handle errors
     }
   }
 
   setEnabled(enabled: boolean) {
     this.enabled = enabled
     if (typeof window !== 'undefined') {
-      localStorage.setItem('brendaNails_soundEnabled', enabled.toString())
+      try {
+        localStorage.setItem('brendaNails_soundEnabled', enabled.toString())
+      } catch (error) {
+        // localStorage not available, ignore
+      }
     }
   }
 
@@ -213,9 +261,9 @@ class SoundSystem {
 
   setVolume(volume: number) {
     this.volume = Math.max(0, Math.min(1, volume)) // Clamp between 0-1
-    this.sounds.forEach((sound) => {
+    for (const sound of this.sounds.values()) {
       sound.volume = this.volume
-    })
+    }
   }
 
   getVolume(): number {
@@ -224,25 +272,23 @@ class SoundSystem {
 
   // Preload all sounds on user interaction (required for mobile)
   async preloadAll() {
-    const promises = Array.from(this.sounds.values()).map((sound) => {
-      return new Promise<void>((resolve) => {
-        if (sound.readyState >= 2) {
-          // HAVE_CURRENT_DATA
-          resolve()
-        } else {
-          sound.addEventListener('canplaythrough', () => resolve(), {
-            once: true,
-          })
-          sound.addEventListener('error', () => resolve(), { once: true })
-        }
-      })
-    })
+    this.userInteracted = true
 
+    // Initialize all sounds after user interaction
+    this.createGeneratedSound('card-hover')
+    this.createGeneratedSound('button-click')
+    this.createGeneratedSound('modal-open')
+    this.createGeneratedSound('modal-close')
+    this.createGeneratedSound('gallery-click')
+    this.createGeneratedSound('form-step')
+    this.createGeneratedSound('form-success')
+    this.createGeneratedSound('nav-hover')
+
+    // Initialize the audio context
     try {
-      await Promise.all(promises)
-      console.log('All sounds preloaded successfully')
+      await this.initAudioContext()
     } catch (error) {
-      console.warn('Some sounds failed to preload:', error)
+      // Silently handle preload failures
     }
   }
 }

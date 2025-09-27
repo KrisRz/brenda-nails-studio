@@ -28,7 +28,6 @@
           "url": "mailto:beniahaker@interia.eu?subject=Brenda%20Nails%20-%20Appointment%20Booking"
         },
         { "label": "💡 What service do I need?", "next": "service_help" },
-        { "label": "📅 Real-time booking", "next": "real_booking_start" },
         { "label": "🕒 Check availability", "next": "availability_check" },
         { "label": "⬅️ Back to main menu", "next": "welcome" }
       ]
@@ -71,15 +70,9 @@
     "classic_services": {
       "msg": "Our classic nail care services:",
       "choices": [
-        {
-          "label": "💅 Classic Manicure - £25 (45min)",
-          "next": "classic_manicure_info"
-        },
-        {
-          "label": "🦶 Pedicure Deluxe - £40 (75min)",
-          "next": "pedicure_info"
-        },
-        { "label": "💎 Acrylic Nails - £50 (120min)", "next": "acrylic_info" },
+        { "label": "💅 Classic Manicure - £25 (45min)", "url": "#contact" },
+        { "label": "🦶 Pedicure Deluxe - £40 (75min)", "url": "#contact" },
+        { "label": "💎 Acrylic Nails - £50 (120min)", "url": "#contact" },
         { "label": "📅 Book any of these", "url": "#contact" },
         { "label": "⬅️ Back to services", "next": "services_menu" }
       ]
@@ -90,7 +83,7 @@
       "choices": [
         {
           "label": "🎨 Custom Nail Art Design - £35 (60min)",
-          "next": "custom_art_info"
+          "url": "#contact"
         },
         {
           "label": "🎭 Cartoon Characters (per nail) - £5",
@@ -212,10 +205,7 @@
       "msg": "🔄 Gel Infill (≤3 weeks) - £30 (60min)\n\nPerfect timing! Your nails just need a refresh. We'll fill the growth area and reapply gel for a fresh look.",
       "choices": [
         { "label": "📅 Book early infill", "url": "#contact" },
-        {
-          "label": "⏰ When should I book next infill?",
-          "next": "infill_timing"
-        },
+        { "label": "⏰ When should I book next infill?", "url": "#contact" },
         { "label": "⬅️ Back to maintenance", "next": "maintenance_services" }
       ]
     },
@@ -496,7 +486,7 @@
       "choices": [
         { "label": "🔨 One or two nails broken", "next": "minor_damage" },
         { "label": "😰 Multiple nails damaged", "next": "major_damage" },
-        { "label": "🗑️ Old nails lifting/peeling", "next": "lifting_nails" },
+        { "label": "🗑️ Old nails lifting/peeling", "url": "#contact" },
         {
           "label": "🦠 Possible infection/irritation",
           "next": "health_concern"
@@ -564,10 +554,7 @@
           "label": "✂️ I want shorter/natural length",
           "next": "natural_length"
         },
-        {
-          "label": "🔄 I want to change current shape",
-          "next": "shape_change"
-        },
+        { "label": "🔄 I want to change current shape", "url": "#contact" },
         { "label": "💬 Get professional advice", "url": "tel:075111201840" },
         { "label": "⬅️ Back to service help", "next": "service_help" }
       ]
@@ -720,81 +707,11 @@
       ]
     },
 
-    "real_booking_start": {
-      "msg": "Great! Let's book your appointment step by step. 🎯\n\nI'll help you find the perfect time slot and service.",
-      "choices": [
-        { "label": "🆕 I'm a new customer", "next": "new_customer_flow" },
-        {
-          "label": "🔄 I'm a returning customer",
-          "next": "returning_customer_flow"
-        },
-        { "label": "💡 Help me choose a service", "next": "service_help" },
-        { "label": "⬅️ Back to booking options", "next": "booking_flow" }
-      ]
-    },
-
-    "new_customer_flow": {
-      "msg": "Welcome to Brenda Nails! 💅✨\n\nLet's start by choosing your service, then we'll check availability and get your details.",
-      "choices": [
-        {
-          "label": "👑 Gel Manicure (£30)",
-          "action": "select_service",
-          "service": "gel_manicure"
-        },
-        {
-          "label": "💎 Gel Acrylic Nails (£45)",
-          "action": "select_service",
-          "service": "gel_acrylic"
-        },
-        {
-          "label": "🤍 French Manicure (£30)",
-          "action": "select_service",
-          "service": "french_manicure"
-        },
-        {
-          "label": "🔄 Gel Infill ≤3 weeks (£30)",
-          "action": "select_service",
-          "service": "gel_infill_early"
-        },
-        {
-          "label": "🔄 Gel Infill >3 weeks (£35)",
-          "action": "select_service",
-          "service": "gel_infill_late"
-        },
-        {
-          "label": "🎨 Cartoon Art per nail (£5)",
-          "action": "select_service",
-          "service": "cartoon_art"
-        },
-        { "label": "📋 See all services", "next": "services_menu" },
-        { "label": "⬅️ Back", "next": "real_booking_start" }
-      ]
-    },
-
-    "returning_customer_flow": {
-      "msg": "Welcome back! 💅\n\nPlease provide your email address so I can find your previous appointments and preferences.",
-      "choices": [
-        { "label": "📧 I'll enter my email", "action": "input_email" },
-        { "label": "📞 I'd rather call instead", "url": "tel:075111201840" },
-        { "label": "🆕 Book as new customer", "next": "new_customer_flow" },
-        { "label": "⬅️ Back", "next": "real_booking_start" }
-      ]
-    },
-
     "availability_check": {
-      "msg": "Let me check our availability for you! 📅\n\nWhich date are you interested in?",
+      "msg": "📅 Check Our Availability:\n\nTo check specific dates and times, please use our online booking form or call us directly. We'll find the perfect time for your appointment!",
       "choices": [
-        {
-          "label": "📅 This week",
-          "action": "check_availability",
-          "period": "this_week"
-        },
-        {
-          "label": "📅 Next week",
-          "action": "check_availability",
-          "period": "next_week"
-        },
-        { "label": "📅 Specific date", "action": "date_picker" },
+        { "label": "📅 Check availability online", "url": "#contact" },
+        { "label": "📞 Call to check availability", "url": "tel:075111201840" },
         { "label": "🕒 What are your hours?", "next": "hours_info" },
         { "label": "⬅️ Back to booking", "next": "booking_flow" }
       ]

@@ -4,7 +4,7 @@
 
 ![Brenda Nails Studio](https://img.shields.io/badge/Brenda%20Nails-Studio-ff69b4?style=for-the-badge&logo=data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEyIDJMMTMuMDkgOC4yNkwyMCA5TDEzLjA5IDE1Ljc0TDEyIDIyTDEwLjkxIDE1Ljc0TDQgOUwxMC45MSA4LjI2TDEyIDJaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K)
 
-**Professional nail art studio with intelligent chatbot booking system**
+**Professional nail art studio with intelligent chatbot booking system & headless CMS**
 
 [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Astro](https://img.shields.io/badge/Astro-FF5D01?style=flat-square&logo=astro&logoColor=white)](https://astro.build/)
@@ -12,10 +12,21 @@
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![AWS](https://img.shields.io/badge/AWS-FF9900?style=flat-square&logo=amazon-aws&logoColor=white)](https://aws.amazon.com/)
 [![Terraform](https://img.shields.io/badge/Terraform-7B42BC?style=flat-square&logo=terraform&logoColor=white)](https://www.terraform.io/)
+[![Webiny](https://img.shields.io/badge/Webiny-FF6900?style=flat-square&logo=webiny&logoColor=white)](https://www.webiny.com/)
 
 </div>
 
 ## 🌟 Features Overview
+
+### 🎛️ **Headless CMS with Webiny**
+- 📝 **Content Management** - Brenda can edit all website content without code
+- 💅 **Service Management** - Add/edit services, prices, descriptions, images
+- 💬 **Testimonials** - Manage customer reviews and ratings
+- 🏢 **Studio Information** - Update address, hours, contact details
+- 📧 **Email Confirmations** - Beautiful automated confirmations for contact form
+- 🔄 **Real-time Updates** - Changes appear instantly on website
+- 🎨 **User-friendly Interface** - Professional CMS dashboard
+- 🔗 **GraphQL API** - Modern API for seamless data integration
 
 ### ✨ **Intelligent Chatbot System**
 - 🤖 **Decision Tree Navigation** - 85+ conversation nodes
@@ -43,6 +54,7 @@
 - 📧 **SES Integration** - Professional email system
 - 📱 **SNS Integration** - SMS notification system
 - 🌐 **API Gateway** - RESTful API endpoints
+- 🎛️ **Webiny CMS** - Headless content management system
 - 🔒 **Secure & Scalable** - Enterprise-grade infrastructure
 
 ## 🏗️ Architecture Overview
@@ -50,21 +62,28 @@
 ```mermaid
 graph TB
     A[Frontend - Astro + React] --> B[Chatbot Widget]
+    A --> L[Webiny GraphQL API]
     B --> C[API Gateway]
     C --> D[Lambda Functions]
     D --> E[DynamoDB]
     D --> F[SES - Email]
     D --> G[SNS - SMS]
     
+    L --> M[Webiny Admin Panel]
+    M --> N[Brenda - Content Editor]
+    
     H[CloudFront CDN] --> A
     I[S3 Static Hosting] --> H
     J[Route53 DNS] --> H
+    J --> O[cms.domain.com - CMS Access]
+    J --> P[api.domain.com - GraphQL API]
     
     K[Terraform IaC] --> C
     K --> D
     K --> E
     K --> F
     K --> G
+    K --> J
 ```
 
 ## 📁 Project Structure
@@ -132,6 +151,7 @@ brenda-nails/
 - **[CloudFront](https://aws.amazon.com/cloudfront/)** - Global CDN
 - **[S3](https://aws.amazon.com/s3/)** - Static hosting
 - **[Route53](https://aws.amazon.com/route53/)** - DNS management
+- **[Webiny](https://www.webiny.com/)** - Headless CMS & GraphQL API
 - **[Terraform](https://www.terraform.io/)** - Infrastructure as Code
 
 ### Development Tools
@@ -139,6 +159,66 @@ brenda-nails/
 - **[pnpm](https://pnpm.io/)** - Fast package manager
 - **[Biome](https://biomejs.dev/)** - Linting & formatting
 - **[Vitest](https://vitest.dev/)** - Testing framework
+
+## 🎛️ Webiny CMS Features
+
+### 📝 **Content Management for Brenda**
+- **User-Friendly Dashboard** - Professional CMS interface accessible via `cms.domain.com`
+- **No Code Required** - Brenda can edit all content without technical knowledge
+- **Real-time Updates** - Changes appear instantly on the website
+- **Rich Text Editor** - Full formatting capabilities for descriptions
+
+### 💅 **Service Management**
+- **Complete Service Control** - Add, edit, delete nail services
+- **Dynamic Pricing** - Update prices instantly across the website
+- **Service Categories** - Organize services (Manicure, Pedicure, Nail Art)
+- **Duration Management** - Set appointment durations for booking system
+- **Featured Services** - Highlight popular services on homepage
+- **Image Upload** - Beautiful service photos with automatic optimization
+
+### 💬 **Testimonials System**
+- **Customer Reviews** - Manage client testimonials and ratings
+- **Star Ratings** - 1-5 star rating system
+- **Featured Reviews** - Highlight best testimonials on homepage
+- **Review Dates** - Track when reviews were submitted
+- **Service Attribution** - Link reviews to specific services
+
+### 🏢 **Studio Information Management**
+- **Contact Details** - Phone, email, address updates
+- **Opening Hours** - Flexible schedule management
+- **Hero Content** - Homepage taglines and messaging
+- **About Content** - Studio story and information
+- **Location Details** - Address with formatting support
+
+### 🔗 **GraphQL API Integration**
+```graphql
+# Example: Fetch all services
+query ListServices {
+  listServices {
+    data {
+      title
+      category
+      priceFrom
+      durationMinutes
+      description {
+        values {
+          value
+        }
+      }
+      image {
+        src
+      }
+      featured
+    }
+  }
+}
+```
+
+### 📧 **Email System Enhancement**
+- **Contact Form Confirmations** - Beautiful HTML emails sent to customers
+- **Professional Templates** - Branded email design matching website
+- **Automatic Responses** - Instant confirmation when customers contact studio
+- **Service Information** - Include studio details in confirmations
 
 ## 🤖 Chatbot Features
 
@@ -238,9 +318,16 @@ brenda-nails/
 | **SNS** | £0.05 | SMS notifications (50 messages) |
 | **S3 + CloudFront** | £2-5 | Static hosting & CDN |
 | **Route53** | £0.50 | DNS management |
-| **Total** | **£4-7/month** | **Complete professional system** |
+| **Webiny CMS** | £0-15 | Headless CMS (serverless, pay-per-use) |
+| **Total** | **£4-22/month** | **Complete professional system with CMS** |
 
-*Compare to: Traditional hosting + booking software = £50-200/month*
+*Compare to: Traditional hosting + booking software + CMS = £80-300/month*
+
+### 🎛️ **Webiny CMS Benefits**
+- **Serverless Architecture** - No fixed costs, pay only for usage
+- **Self-hosted** - Complete data ownership and control
+- **Scalable** - Grows with business needs
+- **No Vendor Lock-in** - Full control over your content and infrastructure
 
 ## 🚀 Quick Start
 
@@ -271,20 +358,75 @@ pnpm nx build frontend
 ### 🚀 Deployment
 
 ```bash
-# 1. Deploy infrastructure
+# 1. Deploy Webiny CMS (first time)
+cd /path/to/webiny-project
+yarn webiny deploy --env prod --allow-local-state-files
+
+# 2. Deploy infrastructure
 cd infra
 terraform init
 terraform plan
 terraform apply
 
-# 2. Update API URL in chatbot
-# Edit apps/frontend/public/chatbot/chatbot.js
-# Replace apiBaseUrl with your API Gateway URL
+# 3. Update API URLs in frontend
+# Webiny API URL will be available in Terraform outputs
+# Update frontend to use Webiny GraphQL API
 
-# 3. Deploy frontend
+# 4. Deploy frontend
 pnpm nx build frontend
-# Deploy to S3 or Amplify
+# Deploy to S3 via Terraform
 ```
+
+### 🎛️ **Webiny CMS Setup**
+
+```bash
+# Create Webiny project (separate from main monorepo)
+npx create-webiny-project brenda-cms
+cd brenda-cms
+
+# Configure for eu-west-2
+echo "AWS_REGION=eu-west-2" >> .env
+echo "WEBINY_PROJECT_NAME=brenda-cms" >> .env
+
+# Deploy to AWS
+yarn webiny deploy --env prod
+
+# Access URLs will be provided after deployment:
+# Admin Panel: https://xxx.cloudfront.net
+# GraphQL API: https://xxx.cloudfront.net/graphql
+```
+
+### 📝 **Content Models Setup**
+
+After Webiny deployment, create these content models in the Admin Panel:
+
+1. **Service Model**
+   - title (Text, Required)
+   - category (Text, Required) 
+   - slug (Text, Required)
+   - priceFrom (Number, Required)
+   - durationMinutes (Number, Required)
+   - description (Rich Text)
+   - image (File)
+   - featured (Boolean)
+
+2. **Testimonial Model**
+   - title (Text, Required)
+   - authorName (Text, Required)
+   - rating (Number, Required)
+   - serviceUsed (Text)
+   - reviewDate (DateTime)
+   - description (Rich Text, Required)
+   - featured (Boolean)
+
+3. **StudioInfo Model**
+   - title (Text, Required)
+   - phoneNumber (Text, Required)
+   - emailAddress (Text, Required)
+   - address (Rich Text, Required)
+   - openingHours (Rich Text, Required)
+   - heroTagline (Text)
+   - description (Rich Text)
 
 ## 📊 Business Configuration
 

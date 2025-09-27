@@ -8,13 +8,13 @@ export default defineConfig({
     react(),
     tailwind(),
   ],
-  output: 'hybrid',
-  adapter: node({
-    mode: 'standalone',
-  }),
+  output: 'static',
   server: {
     port: 4321,
     host: true,
+  },
+  build: {
+    format: 'directory'
   },
   vite: {
     resolve: {

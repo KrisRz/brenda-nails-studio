@@ -1,19 +1,12 @@
 import { gsap } from 'gsap'
-import { useEffect, useRef, useState } from 'react'
-import { getPersonalizedGreeting, serviceMemory } from '../utils/serviceMemory'
+import { useEffect, useRef } from 'react'
 import { Button } from './ui/button'
 
 export default function Hero() {
-  const [personalizedGreeting, setPersonalizedGreeting] = useState('')
   const heroRef = useRef<HTMLElement>(null)
   const titleRef = useRef<HTMLHeadingElement>(null)
   const subtitleRef = useRef<HTMLParagraphElement>(null)
   const buttonsRef = useRef<HTMLDivElement>(null)
-
-  // Load personalized greeting
-  useEffect(() => {
-    setPersonalizedGreeting(getPersonalizedGreeting())
-  }, [])
 
   useEffect(() => {
     const ctx = gsap.context(() => {
@@ -46,17 +39,6 @@ export default function Hero() {
             })
           },
         })
-      }
-
-      // Personalized greeting fade in
-      const greetingElement = document.getElementById('personalized-greeting')
-      if (greetingElement) {
-        tl.fromTo(
-          greetingElement,
-          { opacity: 0, scale: 0.8 },
-          { opacity: 1, scale: 1, duration: 0.6, ease: 'back.out(1.7)' },
-          '-=0.5'
-        )
       }
 
       // Subtitle slide up
@@ -164,29 +146,18 @@ export default function Hero() {
       </div>
       <div className="container mx-auto px-4 text-center relative z-10">
         <div className="mb-6">
-          {/* Personalized Greeting */}
-          {personalizedGreeting && (
-            <div className="mb-6 opacity-0" id="personalized-greeting">
-              <p className="text-white/90 text-lg font-sans bg-white/10 backdrop-blur-sm rounded-full px-6 py-2 inline-block border border-white/20">
-                {personalizedGreeting}
-              </p>
-            </div>
-          )}
-
           <div className="flex items-center justify-center mb-4">
-            <span className="text-4xl md:text-5xl mr-4 animate-pulse">✨</span>
             <h1
               ref={titleRef}
-              className="text-4xl md:text-6xl font-serif font-bold text-white drop-shadow-2xl tracking-wide luxury-heading"
+              className="text-4xl md:text-6xl font-bold text-white drop-shadow-2xl tracking-wide luxury-heading"
             >
               NAILS. REINVENTED.
             </h1>
-            <span className="text-4xl md:text-5xl ml-4 animate-pulse">✨</span>
           </div>
         </div>
         <p
           ref={subtitleRef}
-          className="text-luxury-subtitle font-sans text-white/95 mb-8 max-w-3xl mx-auto drop-shadow-lg opacity-0"
+          className="text-luxury-subtitle text-white/95 mb-8 max-w-3xl mx-auto drop-shadow-lg opacity-0"
           style={{ transform: 'translateY(30px)' }}
         >
           Where artistry meets excellence. Professional nail care crafted with
@@ -198,7 +169,10 @@ export default function Hero() {
           className="flex flex-col sm:flex-row gap-4 justify-center"
         >
           <a href="#contact">
-            <Button size="lg" className="bg-rose-600 hover:bg-rose-700">
+            <Button
+              size="lg"
+              className="bg-white/20 backdrop-blur-md border border-white/30 text-white hover:bg-white/30 transition-all duration-300"
+            >
               Book Appointment
             </Button>
           </a>

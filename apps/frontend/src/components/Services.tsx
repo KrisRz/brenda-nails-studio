@@ -30,7 +30,7 @@ const defaultServices = [
     size: 'large',
   },
   {
-    title: 'Gel Manicure Infill (up to 3 weeks)',
+    title: 'Gel Infill (≤3 weeks)',
     description: 'Maintenance and refresh for your existing gel manicure',
     price: 'From £30',
     duration: '60 min',
@@ -48,7 +48,7 @@ const defaultServices = [
     size: 'small',
   },
   {
-    title: 'Gel Manicure Infill (over 3 weeks)',
+    title: 'Gel Infill (>3 weeks)',
     description: 'Extended maintenance for gel manicures requiring more work',
     price: 'From £35',
     duration: '90 min',
@@ -67,7 +67,7 @@ const defaultServices = [
     size: 'small',
   },
   {
-    title: 'Removal only',
+    title: 'Removal Only',
     description: 'Professional nail polish or gel removal service',
     price: 'From £10',
     duration: '30 min',
@@ -76,7 +76,7 @@ const defaultServices = [
     size: 'large',
   },
   {
-    title: 'Nail repair (per nail)',
+    title: 'Nail Repair (per nail)',
     description: 'Professional repair for damaged or broken nails',
     price: 'From £5',
     duration: '15 min',
@@ -106,22 +106,22 @@ export default function Services() {
           const cmsServices = await response.json()
           console.log('CMS Services:', cmsServices)
 
-          // Keep hardcoded services separate from Webiny services
-          setServices(defaultServices) // Always use hardcoded for main layout
+          // The API returns the combined services (Webiny + hardcoded)
+          // We need to separate them to maintain our existing logic
 
           if (cmsServices && cmsServices.length > 0) {
-            // Filter out Webiny services that match hardcoded ones (avoid duplicates)
-            const uniqueWebinyServices = cmsServices.filter(
-              (webinyService: any) =>
+            // Find services that are NOT in our hardcoded list (these are from Webiny)
+            const webinyServices = cmsServices.filter(
+              (apiService: any) =>
                 !defaultServices.some(
                   (defaultService) =>
                     defaultService.title.toLowerCase() ===
-                    webinyService.name.toLowerCase().trim()
+                    apiService.name.toLowerCase().trim()
                 )
             )
 
-            // Transform unique Webiny services to frontend format
-            const transformedWebinyServices = uniqueWebinyServices.map(
+            // Transform Webiny services to our frontend format
+            const transformedWebinyServices = webinyServices.map(
               (service: any) => ({
                 title: service.name.trim(),
                 description: service.description,
@@ -133,11 +133,13 @@ export default function Services() {
               })
             )
 
+            setServices(defaultServices) // Keep hardcoded services
             setWebinyServices(transformedWebinyServices)
             console.log(
               `Frontend: ${defaultServices.length} hardcoded + ${transformedWebinyServices.length} Webiny services`
             )
           } else {
+            setServices(defaultServices)
             setWebinyServices([])
           }
         } else {
@@ -391,11 +393,11 @@ export default function Services() {
         {/* Animated Title */}
         <div ref={titleRef} className="text-center mb-20">
           <div className="overflow-hidden mb-6">
-            <h2 className="text-luxury-title font-serif bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent luxury-heading tracking-tight-luxury">
+            <h2 className="text-luxury-title bg-gradient-to-r from-rose-600 via-pink-600 to-purple-600 bg-clip-text text-transparent luxury-heading tracking-tight-luxury">
               Our Services
             </h2>
           </div>
-          <p className="text-luxury-subtitle font-sans text-gray-600 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-luxury-subtitle text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Experience the artistry of professional nail care with our curated
             collection of luxury treatments
           </p>
@@ -497,17 +499,16 @@ export default function Services() {
           <div className="max-w-6xl mx-auto relative">
             <div className="relative z-10 py-8">
               {/* Large Quote */}
-              <blockquote className="text-4xl md:text-6xl lg:text-7xl font-serif italic text-gray-800 mb-6 luxury-heading leading-tight tracking-tight-luxury max-w-5xl mx-auto">
+              <blockquote className="text-4xl md:text-6xl lg:text-7xl italic text-gray-800 mb-6 luxury-heading leading-tight tracking-tight-luxury max-w-5xl mx-auto">
                 Perfection is in the details
               </blockquote>
 
               {/* Attribution */}
-              <cite className="text-xl md:text-2xl text-amber-600 tracking-luxury font-sans not-italic font-medium">
+              <cite className="text-xl md:text-2xl text-amber-600 tracking-luxury not-italic font-medium">
                 — Brenda, Master Nail Artist
               </cite>
 
               {/* Simple Star */}
-              <div className="text-amber-400 text-4xl mt-6">✨</div>
             </div>
           </div>
         </div>

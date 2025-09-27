@@ -131,7 +131,7 @@ export default function About() {
           {/* Content */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-luxury-title font-serif text-gray-900 mb-6 luxury-heading tracking-tight-luxury">
+              <h2 className="text-luxury-title  text-gray-900 mb-6 luxury-heading tracking-tight-luxury">
                 Meet Brenda
               </h2>
               <p className="text-lg text-gray-700 leading-relaxed mb-6">

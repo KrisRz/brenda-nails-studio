@@ -17,10 +17,10 @@
   <path d="M185 235 L215 250 L185 265 Z" fill="#e11d48"/>
   
   <!-- Text -->
-  <text x="200" y="320" text-anchor="middle" fill="#374151" font-family="system-ui" font-size="18" font-weight="600">
+  <text x="200" y="320" text-anchor="middle" fill="#374151" font-family="Inter, system-ui" font-size="18" font-weight="600">
     Meet Brenda
   </text>
-  <text x="200" y="345" text-anchor="middle" fill="#6b7280" font-family="system-ui" font-size="14">
+  <text x="200" y="345" text-anchor="middle" fill="#6b7280" font-family="Inter, system-ui" font-size="14">
     Click to play video
   </text>
   

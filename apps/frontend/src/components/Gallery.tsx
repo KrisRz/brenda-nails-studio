@@ -99,7 +99,7 @@ export default function Gallery() {
             trigger: gridRef.current,
             start: 'top 70%',
             end: 'bottom 30%',
-            toggleActions: 'play none none reverse',
+            toggleActions: 'play none none none',
           },
           onComplete: () => {
             images.forEach((image) => {
@@ -431,11 +431,11 @@ export default function Gallery() {
 
       <div className="container mx-auto px-4 relative z-10">
         <div ref={titleRef} className="text-center mb-16">
-          <h2 className="text-luxury-title font-serif text-gray-900 mb-4 luxury-heading tracking-tight-luxury">
+          <h2 className="text-luxury-title text-gray-900 mb-4 luxury-heading tracking-tight-luxury">
             Our Work
           </h2>
           <p
-            className="text-luxury-subtitle font-sans text-gray-600 max-w-2xl mx-auto opacity-0"
+            className="text-luxury-subtitle text-gray-600 max-w-2xl mx-auto opacity-0"
             style={{ transform: 'translateY(20px)' }}
           >
             Discover our latest nail art creations and professional manicure

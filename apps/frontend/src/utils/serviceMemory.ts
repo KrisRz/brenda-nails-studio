@@ -175,7 +175,7 @@ export function getPersonalizedGreeting(): string {
 
   switch (userType) {
     case 'new':
-      return `${timeGreeting}! Welcome to Brenda Nails Studio ✨`
+      return `${timeGreeting}! Welcome to Brenda Nails Studio `
 
     case 'returning':
       if (lastService) {
@@ -185,11 +185,11 @@ export function getPersonalizedGreeting(): string {
 
     case 'frequent':
       if (lastService) {
-        return `${timeGreeting}! Your usual ${lastService} or something new today? 👑`
+        return `${timeGreeting}! Your usual ${lastService} or something new today? `
       }
       return `${timeGreeting}! Great to see you again! 💖`
 
     default:
-      return `${timeGreeting}! Welcome to Brenda Nails Studio ✨`
+      return `${timeGreeting}! Welcome to Brenda Nails Studio `
   }
 }

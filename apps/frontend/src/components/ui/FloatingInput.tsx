@@ -10,6 +10,7 @@ interface FloatingInputProps {
   error?: string
   icon?: string
   className?: string
+  min?: string
 }
 
 export default function FloatingInput({
@@ -21,6 +22,7 @@ export default function FloatingInput({
   error,
   icon,
   className = '',
+  min,
 }: FloatingInputProps) {
   const [isFocused, setIsFocused] = useState(false)
   const [isValid, setIsValid] = useState(true)
@@ -112,6 +114,7 @@ export default function FloatingInput({
           ref={inputRef}
           type={type}
           value={value}
+          min={min}
           onChange={(e) => onChange(e.target.value)}
           onFocus={handleFocus}
           onBlur={handleBlur}
@@ -135,7 +138,6 @@ export default function FloatingInput({
           className={`
             absolute left-4 ${icon ? 'left-12' : 'left-4'}
             transition-all duration-300 pointer-events-none
-            font-sans
             ${
               shouldFloat
                 ? '-top-2 text-xs bg-white px-2 rounded'
@@ -170,7 +172,7 @@ export default function FloatingInput({
       {(error || !isValid) && (
         <div
           ref={errorRef}
-          className="mt-2 text-sm text-red-500 font-sans flex items-center space-x-1"
+          className="mt-2 text-sm text-red-500  flex items-center space-x-1"
         >
           <span>⚠</span>
           <span>{error || `${label} is required`}</span>
@@ -179,7 +181,7 @@ export default function FloatingInput({
 
       {/* Success Message */}
       {hasValue && isValid && !error && (
-        <div className="mt-2 text-sm text-green-600 font-sans flex items-center space-x-1 animate-fade-in">
+        <div className="mt-2 text-sm text-green-600  flex items-center space-x-1 animate-fade-in">
           <span>✓</span>
           <span>Looks good!</span>
         </div>

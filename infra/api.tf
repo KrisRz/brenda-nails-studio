@@ -22,19 +22,6 @@ resource "aws_apigatewayv2_route" "contact" {
   target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
 }
 
-# PHASE 2 - Booking endpoint
-resource "aws_apigatewayv2_route" "booking" {
-  api_id    = aws_apigatewayv2_api.http.id
-  route_key = "POST /booking"
-  target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
-}
-
-# PHASE 2 - Availability check endpoint  
-resource "aws_apigatewayv2_route" "availability" {
-  api_id    = aws_apigatewayv2_api.http.id
-  route_key = "GET /availability"
-  target    = "integrations/${aws_apigatewayv2_integration.lambda.id}"
-}
 
 # CMS Data endpoint - proxy to Webiny/DynamoDB
 resource "aws_apigatewayv2_route" "cms_data" {

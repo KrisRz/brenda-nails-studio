@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { soundSystem } from '../utils/soundSystem'
+import SoundToggle from './ui/SoundToggle'
 import { Button } from './ui/button'
 
 export default function Navigation() {
@@ -50,10 +51,9 @@ export default function Navigation() {
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
           <div className="flex items-center">
-            <span className="text-2xl mr-3 animate-pulse">👑</span>
             <div className="flex flex-col">
               <span
-                className={`text-lg font-serif font-bold tracking-wide transition-all duration-300 ${
+                className={`text-lg font-bold tracking-wide transition-all duration-300 luxury-heading ${
                   isScrolled
                     ? 'bg-gradient-to-r from-amber-500 via-rose-500 to-purple-600 bg-clip-text text-transparent'
                     : 'text-white drop-shadow-2xl'
@@ -66,7 +66,7 @@ export default function Navigation() {
                   isScrolled ? 'text-rose-500' : 'text-rose-200 drop-shadow-lg'
                 }`}
               >
-                NAILS STUDIO
+                BRENDA NAILS STUDIO
               </span>
             </div>
           </div>
@@ -77,7 +77,7 @@ export default function Navigation() {
               <a
                 key={item.name}
                 href={item.href}
-                className={`font-serif font-medium tracking-wide text-sm uppercase transition-all duration-300 hover:scale-105 relative group ${
+                className={`font-medium tracking-wide text-sm uppercase transition-all duration-300 hover:scale-105 relative group ${
                   isScrolled
                     ? 'text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-rose-500 hover:to-purple-600 hover:bg-clip-text'
                     : 'text-white hover:text-rose-200 drop-shadow-lg'
@@ -96,8 +96,16 @@ export default function Navigation() {
             ))}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="md:hidden">
+          {/* Sound Toggle - Absolute Right */}
+          <div className="hidden md:block absolute right-4">
+            <SoundToggle />
+          </div>
+
+          {/* Mobile menu button and sound toggle */}
+          <div className="md:hidden flex items-center space-x-3">
+            {/* Sound Toggle for Mobile */}
+            <SoundToggle />
+
             <button
               onClick={() => setIsMenuOpen(!isMenuOpen)}
               className={`focus:outline-none transition-colors duration-300 ${
@@ -146,7 +154,7 @@ export default function Navigation() {
                 <a
                   key={item.name}
                   href={item.href}
-                  className={`font-serif font-medium tracking-wide text-sm uppercase transition-all duration-300 hover:scale-105 ${
+                  className={`font-medium tracking-wide text-sm uppercase transition-all duration-300 hover:scale-105 ${
                     isScrolled
                       ? 'text-gray-700 hover:text-transparent hover:bg-gradient-to-r hover:from-rose-500 hover:to-purple-600 hover:bg-clip-text'
                       : 'text-white hover:text-rose-200'

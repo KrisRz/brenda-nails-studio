@@ -58,6 +58,30 @@ data "aws_cloudfront_origin_request_policy" "all_viewer" {
   name = "Managed-AllViewer"
 }
 
+resource "aws_cloudfront_function" "url_rewrite" {
+  name    = "${local.name_prefix}-url-rewrite"
+  runtime = "cloudfront-js-1.0"
+  comment = "Rewrite URLs to append /index.html for directory-style routing"
+  publish = true
+  code    = <<-EOT
+function handler(event) {
+    var request = event.request;
+    var uri = request.uri;
+    
+    // If URI ends with /, append index.html
+    if (uri.endsWith('/')) {
+        request.uri += 'index.html';
+    }
+    // If URI doesn't have a file extension and doesn't end with /, append /index.html
+    else if (!uri.includes('.') && !uri.endsWith('/')) {
+        request.uri += '/index.html';
+    }
+    
+    return request;
+}
+EOT
+}
+
 resource "aws_cloudfront_distribution" "site" {
   enabled             = true
   is_ipv6_enabled     = true
@@ -87,7 +111,13 @@ resource "aws_cloudfront_distribution" "site" {
     compress                 = true
     cache_policy_id          = data.aws_cloudfront_cache_policy.caching_optimized.id
     origin_request_policy_id = data.aws_cloudfront_origin_request_policy.all_viewer.id
+    
+    function_association {
+      event_type   = "viewer-request"
+      function_arn = aws_cloudfront_function.url_rewrite.arn
+    }
   }
+
 
   price_class = "PriceClass_100"
 

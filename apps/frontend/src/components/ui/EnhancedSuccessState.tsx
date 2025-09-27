@@ -87,7 +87,7 @@ export default function EnhancedSuccessState({
       case 'contact':
         return '📞'
       default:
-        return '✨'
+        return ''
     }
   }
 
@@ -138,7 +138,6 @@ export default function EnhancedSuccessState({
             className="absolute inset-0 pointer-events-none"
           >
             <div className="absolute top-2 left-2 text-2xl">🎉</div>
-            <div className="absolute top-4 right-4 text-xl">✨</div>
             <div className="absolute top-1 left-1/2 text-lg">🎊</div>
             <div className="absolute top-3 right-1/4 text-xl">💫</div>
             <div className="absolute top-2 left-3/4 text-lg">⭐</div>
@@ -147,12 +146,10 @@ export default function EnhancedSuccessState({
 
         {/* Success Message */}
         <div className="mb-6">
-          <h3 className="text-2xl font-serif font-bold text-gray-900 mb-3 luxury-heading">
+          <h3 className="text-2xl  font-bold text-gray-900 mb-3 luxury-heading">
             Perfect! {getIcon()}
           </h3>
-          <p className="text-gray-600 font-sans leading-relaxed">
-            {getMessage()}
-          </p>
+          <p className="text-gray-600  leading-relaxed">{getMessage()}</p>
         </div>
 
         {/* Action Button */}

@@ -78,42 +78,42 @@ export default function EnhancedAbout() {
       id: 2,
       title: 'Professional Certification 2',
       issuer: 'Nail Institute',
-      year: '2023',
+      year: '2025',
       image: '/images/certifications/111.jpg',
     },
     {
       id: 3,
       title: 'Professional Certification 3',
       issuer: 'Beauty Institute',
-      year: '2023',
+      year: '2016',
       image: '/images/certifications/22.jpg',
     },
     {
       id: 4,
       title: 'Professional Certification 4',
       issuer: 'Academy of Beauty',
-      year: '2022',
+      year: '2016',
       image: '/images/certifications/33.jpg',
     },
     {
       id: 5,
       title: 'Professional Certification 5',
       issuer: 'Professional Institute',
-      year: '2022',
+      year: '2016',
       image: '/images/certifications/44.jpg',
     },
     {
       id: 6,
       title: 'Professional Certification 6',
       issuer: 'Beauty Academy',
-      year: '2021',
+      year: '2024',
       image: '/images/certifications/55.jpg',
     },
     {
       id: 7,
       title: 'Professional Certification 7',
       issuer: 'Beauty Institute',
-      year: '2021',
+      year: '2018',
       image: '/images/certifications/66.jpg',
     },
   ]
@@ -128,10 +128,10 @@ export default function EnhancedAbout() {
       <div className="container mx-auto px-4">
         {/* Enhanced Header */}
         <div className="text-center mb-16">
-          <h2 className="text-luxury-title font-serif text-gray-900 mb-6 luxury-heading tracking-tight-luxury">
+          <h2 className="text-luxury-title  text-gray-900 mb-6 luxury-heading tracking-tight-luxury">
             Meet Brenda
           </h2>
-          <p className="text-luxury-subtitle font-sans text-gray-600 max-w-3xl mx-auto">
+          <p className="text-luxury-subtitle  text-gray-600 max-w-3xl mx-auto">
             A journey of passion, dedication, and artistic excellence in nail
             artistry
           </p>
@@ -142,13 +142,13 @@ export default function EnhancedAbout() {
           <div className="lg:col-span-1 space-y-8">
             {/* Story */}
             <div>
-              <p className="text-luxury-body font-sans text-gray-700 leading-relaxed mb-6">
+              <p className="text-luxury-body  text-gray-700 leading-relaxed mb-6">
                 With over 8 years of dedicated experience in nail artistry,
                 Brenda has transformed her passion into an art form. What
                 started as a fascination with colors and creativity has evolved
                 into a mastery of technique, precision, and luxury service.
               </p>
-              <p className="text-luxury-body font-sans text-gray-700 leading-relaxed mb-8">
+              <p className="text-luxury-body  text-gray-700 leading-relaxed mb-8">
                 Specializing in custom nail art, gel extensions, and luxury
                 manicure services, Brenda combines technical expertise with
                 creative vision to deliver exceptional results that exceed
@@ -159,37 +159,31 @@ export default function EnhancedAbout() {
             {/* Enhanced Stats */}
             <div className="grid grid-cols-3 gap-6 pt-8">
               <div className="text-center group">
-                <div className="text-4xl font-serif font-bold text-transparent bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text mb-2 group-hover:scale-110 transition-transform duration-300">
+                <div className="text-4xl  font-bold text-transparent bg-gradient-to-r from-rose-600 to-pink-600 bg-clip-text mb-2 group-hover:scale-110 transition-transform duration-300">
                   500+
                 </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Happy Clients
-                </div>
+                <div className="text-sm text-gray-600 ">Happy Clients</div>
               </div>
               <div className="text-center group">
-                <div className="text-4xl font-serif font-bold text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text mb-2 group-hover:scale-110 transition-transform duration-300">
+                <div className="text-4xl  font-bold text-transparent bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text mb-2 group-hover:scale-110 transition-transform duration-300">
                   8+
                 </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Years Experience
-                </div>
+                <div className="text-sm text-gray-600 ">Years Experience</div>
               </div>
               <div className="text-center group">
-                <div className="text-4xl font-serif font-bold text-transparent bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text mb-2 group-hover:scale-110 transition-transform duration-300">
+                <div className="text-4xl  font-bold text-transparent bg-gradient-to-r from-amber-600 to-orange-600 bg-clip-text mb-2 group-hover:scale-110 transition-transform duration-300">
                   100%
                 </div>
-                <div className="text-sm text-gray-600 font-sans">
-                  Satisfaction
-                </div>
+                <div className="text-sm text-gray-600 ">Satisfaction</div>
               </div>
             </div>
 
             {/* CTA */}
-            <div className="flex flex-col sm:flex-row gap-4 pt-6">
-              <a href="#contact">
+            <div className="flex flex-col sm:flex-row gap-4 pt-6 items-center sm:items-start justify-center sm:justify-start">
+              <a href="#contact" className="w-full sm:w-auto">
                 <Button
                   size="lg"
-                  className="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 shadow-lg hover:scale-105 transition-all duration-300"
+                  className="bg-gradient-to-r from-rose-600 to-pink-600 hover:from-rose-700 hover:to-pink-700 shadow-lg hover:scale-105 transition-all duration-300 w-full sm:w-auto"
                 >
                   Book Your Appointment
                 </Button>
@@ -197,7 +191,7 @@ export default function EnhancedAbout() {
               <Button
                 variant="outline"
                 size="lg"
-                className="border-rose-600 text-rose-600 hover:bg-rose-50 hover:scale-105 transition-all duration-300"
+                className="border-rose-600 text-rose-600 hover:bg-rose-50 hover:scale-105 transition-all duration-300 w-full sm:w-auto"
                 onClick={openCertModal}
               >
                 View Certifications

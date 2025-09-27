@@ -1,0 +1,321 @@
+name: Terraform CI/CD
+
+on:
+  pull_request:
+    branches: [ main ]
+    paths: ['envs/**', 'modules/**', '.github/workflows/terraform.yml']
+  push:
+    branches: [ main ]
+    paths: ['envs/**', 'modules/**', '.github/workflows/terraform.yml']
+  schedule:
+    - cron: '30 3 * * 1'  # Weekly drift detection
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'prod'
+        type: choice
+        options:
+          - prod
+      action:
+        description: 'Action to perform'
+        required: true
+        default: 'plan'
+        type: choice
+        options:
+          - plan
+          - apply
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  TF_IN_AUTOMATION: true
+  TF_INPUT: false
+  TF_CLI_ARGS_init: -upgrade
+  AWS_REGION: eu-west-2
+
+jobs:
+  validate:
+    name: Validate & Security
+    if: github.event_name != 'schedule'
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+
+      - name: Terraform Format Check
+        id: fmt
+        run: |
+          terraform fmt -check -recursive
+        continue-on-error: true
+
+      - name: Setup TFLint
+        uses: terraform-linters/setup-tflint@v4
+        with:
+          tflint_version: latest
+
+      - name: TFLint Init
+        run: tflint --init
+
+      - name: TFLint
+        id: tflint
+        run: |
+          tflint --recursive --format compact
+        continue-on-error: true
+
+      - name: TFSec Security Scan
+        uses: aquasecurity/tfsec-action@v1.0.3
+        with:
+          working_directory: .
+          format: sarif
+          sarif_file: tfsec.sarif
+        continue-on-error: true
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        if: always()
+        with:
+          sarif_file: tfsec.sarif
+
+      - name: Validation Summary
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fmtResult = '${{ steps.fmt.outcome }}';
+            const tflintResult = '${{ steps.tflint.outcome }}';
+            
+            let summary = '## Terraform Validation Results\n\n';
+            summary += `- **Format Check**: ${fmtResult === 'success' ? '✅ Passed' : '❌ Failed'}\n`;
+            summary += `- **TFLint**: ${tflintResult === 'success' ? '✅ Passed' : '⚠️ Issues found'}\n`;
+            summary += `- **TFSec**: Security scan completed (check Security tab for details)\n`;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: summary
+            });
+
+  plan:
+    name: Plan
+    runs-on: ubuntu-latest
+    needs: [validate]
+    if: |
+      github.event_name == 'pull_request' || 
+      (github.event_name == 'workflow_dispatch' && inputs.action == 'plan')
+    environment: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'prod' }}
+    
+    concurrency:
+      group: terraform-plan-${{ github.ref }}
+      cancel-in-progress: true
+
+    defaults:
+      run:
+        working-directory: envs/prod
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/${{ vars.GHA_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: terraform-plan-${{ github.run_id }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+
+      - name: Terraform Init
+        id: init
+        run: terraform init
+
+      - name: Terraform Validate
+        id: validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        run: |
+          terraform plan -detailed-exitcode -out=tfplan 2>&1 | tee plan.txt
+          echo "exitcode=${PIPESTATUS[0]}" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Upload Plan
+        if: steps.plan.outputs.exitcode == '2'
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-${{ github.run_id }}
+          path: envs/prod/tfplan
+          retention-days: 30
+
+      - name: Comment Plan
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const planOutput = fs.readFileSync('envs/prod/plan.txt', 'utf8');
+            const planResult = '${{ steps.plan.outputs.exitcode }}';
+            
+            let status = '';
+            if (planResult === '0') status = '✅ No changes';
+            else if (planResult === '2') status = '📋 Changes detected';
+            else status = '❌ Plan failed';
+            
+            const output = `## Terraform Plan Result: ${status}
+            
+            <details>
+            <summary>Plan Output</summary>
+            
+            \`\`\`terraform
+            ${planOutput.slice(-3000)} // Last 3000 characters
+            \`\`\`
+            </details>
+            
+            Plan file uploaded as artifact: \`terraform-plan-${{ github.run_id }}\``;
+            
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
+
+  apply:
+    name: Apply
+    runs-on: ubuntu-latest
+    needs: [validate]
+    if: |
+      (github.ref == 'refs/heads/main' && github.event_name == 'push') ||
+      (github.event_name == 'workflow_dispatch' && inputs.action == 'apply')
+    environment: production
+    
+    concurrency:
+      group: terraform-apply-prod
+      cancel-in-progress: false
+
+    defaults:
+      run:
+        working-directory: envs/prod
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/${{ vars.GHA_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: terraform-apply-${{ github.run_id }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Plan (Safety Check)
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        run: terraform apply -auto-approve tfplan
+
+      - name: Deploy Frontend
+        run: |
+          # Build frontend
+          cd ../../apps/frontend
+          npm install
+          npm run build
+          
+          # Get S3 bucket name and CloudFront distribution ID from outputs
+          BUCKET_NAME=$(terraform -chdir=../../envs/prod output -raw site_bucket_name)
+          DISTRIBUTION_ID=$(terraform -chdir=../../envs/prod output -raw cloudfront_distribution_id)
+          
+          # Sync to S3
+          aws s3 sync dist/ s3://$BUCKET_NAME/ --delete \
+            --cache-control "public,max-age=31536000" \
+            --exclude "*.html" \
+            --exclude "*.json"
+          
+          # Upload HTML files with no-cache
+          aws s3 sync dist/ s3://$BUCKET_NAME/ \
+            --cache-control "no-cache" \
+            --include "*.html" \
+            --include "*.json"
+          
+          # Invalidate CloudFront
+          aws cloudfront create-invalidation --distribution-id $DISTRIBUTION_ID --paths "/*"
+
+  drift-detect:
+    name: Drift Detection
+    if: github.event_name == 'schedule'
+    runs-on: ubuntu-latest
+    environment: prod-readonly
+    
+    defaults:
+      run:
+        working-directory: envs/prod
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/${{ vars.GHA_ROLE_NAME }}
+          aws-region: ${{ env.AWS_REGION }}
+          role-session-name: terraform-drift-${{ github.run_id }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Detect Drift
+        id: drift
+        run: |
+          terraform plan -detailed-exitcode -out=drift.plan
+          echo "exitcode=$?" >> $GITHUB_OUTPUT
+        continue-on-error: true
+
+      - name: Create Issue on Drift
+        if: steps.drift.outputs.exitcode == '2'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `🚨 Infrastructure Drift Detected - ${new Date().toISOString().split('T')[0]}`,
+              body: `Infrastructure drift has been detected in the production environment.
+              
+              **Environment:** Production
+              **Detection Time:** ${new Date().toISOString()}
+              **Workflow:** ${context.workflow}
+              **Run:** ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}
+              
+              Please review the Terraform plan and apply necessary changes.`,
+              labels: ['infrastructure', 'drift', 'production']
+            });
