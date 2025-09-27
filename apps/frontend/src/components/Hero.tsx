@@ -149,7 +149,7 @@ export default function Hero() {
           <div className="flex items-center justify-center mb-4">
             <h1
               ref={titleRef}
-              className="text-4xl md:text-6xl font-bold text-red-500 drop-shadow-2xl tracking-wide luxury-heading"
+              className="text-4xl md:text-6xl font-bold text-white drop-shadow-2xl tracking-wide luxury-heading"
             >
               NAILS. REINVENTED.
             </h1>
