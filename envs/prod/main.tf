@@ -106,19 +106,19 @@ resource "aws_acm_certificate_validation" "cloudfront" {
 # Lambda package preparation
 resource "null_resource" "lambda_build" {
   triggers = {
-    lambda_code = filemd5("${path.root}/../../infra/lambda/index.mjs")
-    lambda_deps = filemd5("${path.root}/../../infra/lambda/package.json")
+    lambda_code = filemd5("${path.root}/../../lambda/index.mjs")
+    lambda_deps = filemd5("${path.root}/../../lambda/package.json")
   }
 
   provisioner "local-exec" {
-    working_dir = "${path.root}/../../infra/lambda"
+    working_dir = "${path.root}/../../lambda"
     command     = "npm install --omit=dev --no-audit --no-fund"
   }
 }
 
 data "archive_file" "lambda_zip" {
   type        = "zip"
-  source_dir  = "${path.root}/../../infra/lambda"
+  source_dir  = "${path.root}/../../lambda"
   output_path = "${path.root}/lambda.zip"
   depends_on  = [null_resource.lambda_build]
 }
