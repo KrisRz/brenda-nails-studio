@@ -106,7 +106,6 @@ jobs:
     if: |
       github.event_name == 'pull_request' || 
       (github.event_name == 'workflow_dispatch' && inputs.action == 'plan')
-    environment: ${{ github.event_name == 'workflow_dispatch' && inputs.environment || 'prod' }}
     
     concurrency:
       group: terraform-plan-${{ github.ref }}
