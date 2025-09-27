@@ -52,6 +52,57 @@ permissions:
 environment: production  # Requires approval
 ```
 
+### 🔐 **OIDC Authentication Flow**
+
+```mermaid
+sequenceDiagram
+    participant Dev as 👨‍💻 Developer
+    participant GH as 🐙 GitHub
+    participant GHA as ⚡ GitHub Actions
+    participant OIDC as 🔑 GitHub OIDC Provider
+    participant AWS as ☁️ AWS STS
+    participant S3 as 📦 S3 Bucket
+
+    Note over Dev,S3: Secure Keyless Deployment Pipeline
+
+    Dev->>GH: 1. git push origin main
+    GH->>GHA: 2. Trigger workflow
+    
+    Note over GHA: Build & Test Phase
+    GHA->>GHA: 3. npm install & build
+    
+    Note over GHA,AWS: OIDC Authentication Phase
+    GHA->>OIDC: 4. Request JWT token
+    OIDC->>GHA: 5. Return signed JWT
+    
+    Note right of OIDC: JWT Claims:<br/>- repo: KrisRz/brenda-nails-studio<br/>- ref: refs/heads/main<br/>- actor: KrisRz<br/>- exp: 3600s
+    
+    GHA->>AWS: 6. AssumeRoleWithWebIdentity + JWT
+    AWS->>AWS: 7. Validate JWT signature
+    AWS->>AWS: 8. Check trust policy conditions
+    
+    Note right of AWS: Trust Policy Validation:<br/>✅ aud = sts.amazonaws.com<br/>✅ sub = repo:KrisRz/brenda-nails-studio:*<br/>✅ JWT not expired
+    
+    AWS->>GHA: 9. Return temporary credentials
+    
+    Note right of AWS: Temp Credentials:<br/>- AWS_ACCESS_KEY_ID<br/>- AWS_SECRET_ACCESS_KEY<br/>- AWS_SESSION_TOKEN<br/>- Expires in 1 hour
+    
+    Note over GHA,S3: Deployment Phase
+    GHA->>S3: 10. aws s3 sync dist/ s3://brenda-nails.com/
+    GHA->>S3: 11. aws cloudfront create-invalidation
+    S3-->>Dev: 12. ✅ Changes live on brenda-nails.com
+```
+
+### 🛡️ **OIDC Security Benefits**
+
+| Traditional Keys | OIDC Approach | Security Improvement |
+|------------------|---------------|---------------------|
+| 🔑 Long-lived secrets | ⏱️ Short-lived tokens (1h) | **99.7% less exposure time** |
+| 📝 Manual rotation | 🔄 Automatic rotation | **Zero maintenance overhead** |
+| 🗂️ Stored in GitHub Secrets | 🚫 No secrets stored | **Zero secret sprawl** |
+| 🌐 Global access | 🎯 Repository-specific | **Precise access control** |
+| 📊 Basic logging | 🔍 Detailed audit trail | **Complete traceability** |
+
 ### 📊 **Deployment Metrics**
 - **Build Time**: ~2-3 minutes (Node.js + npm)
 - **Upload Speed**: ~40 MB/s to S3 
@@ -433,6 +484,68 @@ terraform init && terraform apply
 # 4. Setup GitHub OIDC (automated via CI/CD)
 # → All future deployments are automated via GitHub Actions!
 ```
+
+### 🔐 **OIDC Implementation Details**
+
+#### **AWS IAM OIDC Provider Configuration**
+```hcl
+resource "aws_iam_openid_connect_provider" "github" {
+  url = "https://token.actions.githubusercontent.com"
+  client_id_list = ["sts.amazonaws.com"]
+  thumbprint_list = ["6938fd4d98bab03faadb97b34396831e3780aea1"]
+}
+```
+
+#### **Trust Policy with Precise Control**
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [{
+    "Effect": "Allow",
+    "Principal": {
+      "Federated": "arn:aws:iam::ACCOUNT:oidc-provider/token.actions.githubusercontent.com"
+    },
+    "Action": "sts:AssumeRoleWithWebIdentity",
+    "Condition": {
+      "StringEquals": {
+        "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+      },
+      "StringLike": {
+        "token.actions.githubusercontent.com:sub": [
+          "repo:KrisRz/brenda-nails-studio:ref:refs/heads/main",
+          "repo:KrisRz/brenda-nails-studio:environment:production",
+          "repo:KrisRz/brenda-nails-studio:pull_request"
+        ]
+      }
+    }
+  }]
+}
+```
+
+#### **JWT Token Structure**
+```json
+{
+  "iss": "https://token.actions.githubusercontent.com",
+  "aud": "sts.amazonaws.com",
+  "sub": "repo:KrisRz/brenda-nails-studio:ref:refs/heads/main",
+  "repository": "KrisRz/brenda-nails-studio",
+  "repository_owner": "KrisRz",
+  "ref": "refs/heads/main",
+  "sha": "abc123def456...",
+  "workflow": "Deploy Website",
+  "actor": "KrisRz",
+  "run_id": "1234567890",
+  "exp": 1640995200,
+  "iat": 1640991600
+}
+```
+
+**Key Claims Explanation:**
+- **`sub`**: Subject - identifies exact repo/branch/environment
+- **`aud`**: Audience - must match AWS OIDC client_id
+- **`exp`**: Expiration - token valid for ~1 hour only
+- **`iss`**: Issuer - GitHub's OIDC endpoint
+- **`repository`**: Full repo name for additional validation
 
 ### 🎛️ **Webiny CMS Setup**
 
