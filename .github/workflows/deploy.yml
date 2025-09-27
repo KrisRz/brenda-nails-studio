@@ -59,12 +59,14 @@ jobs:
           
           # Find and invalidate CloudFront
           DISTRIBUTION_ID=$(aws cloudfront list-distributions \
-            --query "DistributionList.Items[?DefaultCacheBehavior.TargetOriginId=='s3-site'].Id" \
-            --output text | head -1)
+            --query "DistributionList.Items[0].Id" \
+            --output text)
           
-          if [ -n "$DISTRIBUTION_ID" ]; then
+          if [ -n "$DISTRIBUTION_ID" ] && [ "$DISTRIBUTION_ID" != "None" ]; then
             aws cloudfront create-invalidation \
-              --distribution-id $DISTRIBUTION_ID \
+              --distribution-id "$DISTRIBUTION_ID" \
               --paths "/*"
             echo "✅ CloudFront invalidated: $DISTRIBUTION_ID"
+          else
+            echo "⚠️ CloudFront distribution not found, manual invalidation needed"
           fi
