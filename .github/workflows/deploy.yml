@@ -1,4 +1,4 @@
-name: Deploy Frontend
+name: Deploy Website
 
 on:
   push:
@@ -10,12 +10,9 @@ permissions:
   id-token: write
   contents: read
 
-env:
-  AWS_REGION: eu-west-2
-
 jobs:
   deploy:
-    name: Deploy Frontend
+    name: Deploy to Production
     runs-on: ubuntu-latest
     environment: production
     
@@ -28,26 +25,27 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Install pnpm
-        run: npm install -g pnpm@8.15.9
+      - name: Install dependencies (npm)
+        run: |
+          cd apps/frontend
+          npm install
 
-      - name: Install dependencies
-        run: pnpm install --frozen-lockfile
-        working-directory: apps/frontend
-
-      - name: Build frontend
-        run: pnpm build
-        working-directory: apps/frontend
+      - name: Build frontend (npm)
+        run: |
+          cd apps/frontend
+          npm run build
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
         with:
           role-to-assume: arn:aws:iam::${{ vars.AWS_ACCOUNT_ID }}:role/${{ vars.GHA_ROLE_NAME }}
-          aws-region: ${{ env.AWS_REGION }}
+          aws-region: eu-west-2
 
-      - name: Deploy to S3 and invalidate CloudFront
+      - name: Deploy to S3 and CloudFront
         run: |
-          # Sync built files to S3
+          cd apps/frontend
+          
+          # Sync to S3
           aws s3 sync dist/ s3://brenda-nails.com/ --delete \
             --cache-control "public,max-age=31536000" \
             --exclude "*.html" \
@@ -59,7 +57,7 @@ jobs:
             --include "*.html" \
             --include "*.json"
           
-          # Invalidate CloudFront (get distribution ID)
+          # Find and invalidate CloudFront
           DISTRIBUTION_ID=$(aws cloudfront list-distributions \
             --query "DistributionList.Items[?DefaultCacheBehavior.TargetOriginId=='s3-site'].Id" \
             --output text | head -1)
@@ -68,8 +66,5 @@ jobs:
             aws cloudfront create-invalidation \
               --distribution-id $DISTRIBUTION_ID \
               --paths "/*"
-            echo "✅ CloudFront invalidation created for distribution: $DISTRIBUTION_ID"
-          else
-            echo "⚠️  CloudFront distribution not found"
+            echo "✅ CloudFront invalidated: $DISTRIBUTION_ID"
           fi
-        working-directory: apps/frontend
